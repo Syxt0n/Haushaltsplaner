@@ -1,0 +1,177 @@
+<mxfile host="Electron" modified="2023-11-18T13:45:44.262Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="j0Ngr_b0UqJUJEiL6Eaj" version="22.0.2" type="device">
+  <diagram name="Page-1" id="vTarCM2FTIdfBwR_sMEf">
+    <mxGraphModel dx="2229" dy="1417" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="BroKOFakoZuUxWqiw_6H-15" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="320" y="440" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-10" value="Shoppinglist" style="html=1;whiteSpace=wrap;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-15">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-11" value="Article" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-15">
+          <mxGeometry x="40" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-12" value="Item" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-15">
+          <mxGeometry x="40" y="200" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-15" source="BroKOFakoZuUxWqiw_6H-11" target="BroKOFakoZuUxWqiw_6H-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-15" source="BroKOFakoZuUxWqiw_6H-12" target="BroKOFakoZuUxWqiw_6H-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-9" value="Shoppinglist&lt;br&gt;Aggregate" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-15">
+          <mxGeometry width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-17" value="" style="group;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="610" y="720" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-2" value="Food" style="html=1;whiteSpace=wrap;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-17">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-17" source="BroKOFakoZuUxWqiw_6H-3" target="BroKOFakoZuUxWqiw_6H-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-3" value="Ingredient" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-17">
+          <mxGeometry x="40" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-17" source="BroKOFakoZuUxWqiw_6H-4" target="BroKOFakoZuUxWqiw_6H-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-4" value="Item" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-17">
+          <mxGeometry x="40" y="200" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-8" value="Food&lt;br&gt;Aggregate" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-17">
+          <mxGeometry width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-8" target="BroKOFakoZuUxWqiw_6H-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="690" />
+              <mxPoint x="700" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-29" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="610" y="440" width="390" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-20" value="Mealplan&lt;br&gt;Aggregate" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-29">
+          <mxGeometry width="390" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-21" value="Mealplan" style="html=1;whiteSpace=wrap;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-29">
+          <mxGeometry x="30" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-22" value="MealplanDay" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-29">
+          <mxGeometry x="230" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-29" source="BroKOFakoZuUxWqiw_6H-24" target="BroKOFakoZuUxWqiw_6H-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-24" value="MealplanPerson" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-29">
+          <mxGeometry x="230" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-29" source="BroKOFakoZuUxWqiw_6H-22" target="BroKOFakoZuUxWqiw_6H-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="160" as="sourcePoint" />
+            <mxPoint x="160" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="290" y="110" />
+              <mxPoint x="290" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-29" source="BroKOFakoZuUxWqiw_6H-26" target="BroKOFakoZuUxWqiw_6H-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-26" value="Meal" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-29">
+          <mxGeometry x="30" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.011;entryY=0.355;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-20" target="BroKOFakoZuUxWqiw_6H-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-31" target="BroKOFakoZuUxWqiw_6H-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="700" />
+              <mxPoint x="1180" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-31" target="BroKOFakoZuUxWqiw_6H-45">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1230" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-31" target="BroKOFakoZuUxWqiw_6H-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="500" />
+              <mxPoint x="1050" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-39" value="ChoreplanDay" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="760" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-49" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="880" y="720" width="400" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-36" value="Choreplanner&lt;br&gt;Aggregate" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-49">
+          <mxGeometry width="400" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-37" value="Choreplan" style="html=1;whiteSpace=wrap;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-49">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-38" value="Chore" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-49">
+          <mxGeometry x="240" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-49" source="BroKOFakoZuUxWqiw_6H-39" target="BroKOFakoZuUxWqiw_6H-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-47" value="Choreplan" style="html=1;whiteSpace=wrap;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-49">
+          <mxGeometry x="240" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="BroKOFakoZuUxWqiw_6H-49" source="BroKOFakoZuUxWqiw_6H-37" target="BroKOFakoZuUxWqiw_6H-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="BroKOFakoZuUxWqiw_6H-38" target="BroKOFakoZuUxWqiw_6H-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-50" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1080" y="440" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-31" value="User" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#D65900;fontColor=#FFFFFF;strokeColor=#C73500;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-50">
+          <mxGeometry width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-32" value="Person" style="html=1;whiteSpace=wrap;fillColor=#B84C00;fontColor=#FFFFFF;strokeColor=#C73500;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-50">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="BroKOFakoZuUxWqiw_6H-50" source="BroKOFakoZuUxWqiw_6H-34" target="BroKOFakoZuUxWqiw_6H-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-34" value="User" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-50">
+          <mxGeometry x="40" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-52" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="720" y="200" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-43" value="Calendar" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-52">
+          <mxGeometry width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-44" value="Calender" style="html=1;whiteSpace=wrap;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-52">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="BroKOFakoZuUxWqiw_6H-52" source="BroKOFakoZuUxWqiw_6H-45" target="BroKOFakoZuUxWqiw_6H-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BroKOFakoZuUxWqiw_6H-45" value="Appointment" style="html=1;whiteSpace=wrap;" vertex="1" parent="BroKOFakoZuUxWqiw_6H-52">
+          <mxGeometry x="120" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
