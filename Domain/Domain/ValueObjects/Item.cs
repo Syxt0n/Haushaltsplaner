@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Shared;
+using Swaksoft.Domain.Seedwork.Aggregates;
 
-
-namespace Domain.Item;
-public class ItemAggregate : AggregateRoot
+namespace Domain.ValueObjects;
+public class Item : ValueObject<Item>
 {
 	public string Name { get; private set; }
-	public bool Deleted { get; private set; }
 }

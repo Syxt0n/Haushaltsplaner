@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Meal\" />
     <Folder Include="User\" />
     <Folder Include="Shoppinglist\" />
     <Folder Include="Planner\" />
