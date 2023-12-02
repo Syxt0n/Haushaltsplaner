@@ -1,1 +1,3 @@
-**/ignore-folder/
+**/Domain/bin/
+**/Domain/obj/
+**/.vs/
