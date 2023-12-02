@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "SLhQysBUurr62PDMIKz9Auvaapn8bO1VNg9xiHDE/7vI/BmPLmtU/qIiiiVjcdaqSzhoE/YM64wsEAxq9djw8Q==",
+  "success": true,
+  "projectFilePath": "D:\\Code\\Haushaltsplaner\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\leonf\\.nuget\\packages\\ddd-base\\1.0.0\\ddd-base.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
