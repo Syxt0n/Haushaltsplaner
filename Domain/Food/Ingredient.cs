@@ -21,6 +21,5 @@ public class Ingredient : ValueObject
 	protected override IEnumerable<object> GetEqualityComponents()
 	{
 		yield return Item;
-		yield return Amount;
 	}
 }

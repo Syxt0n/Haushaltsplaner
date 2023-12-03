@@ -37,11 +37,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\Haushaltsplaner\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "D:\\Code\\Haushaltsplaner\\Domain\\Domain.csproj",
+      "projectPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\Domain.csproj",
       "packagesPath": "C:\\Users\\leonf\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\Haushaltsplaner\\Domain\\obj\\",
+      "outputPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\leonf\\AppData\\Roaming\\NuGet\\NuGet.Config",
