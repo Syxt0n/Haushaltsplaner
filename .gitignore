@@ -1,7 +1,3 @@
-**/Domain/bin/
-**/Domain/obj/
-**/Infrastructure/bin/
-**/Infrastructure/obj/
-**/Test/bin/
-**/Test/obj/
-**/.vs/
+bin
+obj
+.vs
