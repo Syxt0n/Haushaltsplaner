@@ -14,6 +14,21 @@ public class FoodAggregate : AggregateRoot<Guid>
 	public List<Ingredient> Ingredients { get; private set; }
 	public bool Deleted { get; set; }
 
+	public FoodAggregate(Guid id, string name, List<Ingredient> ingredients, bool deleted)
+	{
+		ID = id;
+		Name = name;
+		Ingredients = ingredients;
+		Deleted = deleted;
+	}
+
+	public FoodAggregate(string name, List<Ingredient>? ingredients)
+	{
+		Name = name;
+		Ingredients = ingredients is null ? [] : ingredients;
+		Deleted = false;
+	}
+
 	public bool ChangeName(string name)
 	{
 		if (name == "")
