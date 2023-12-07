@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
 using DDD_Base.Domain;
 using Domain.Food;
 using Domain.Repositories;
+using Domain.Shared;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
 public class FoodRepositories : BaseRepository, IFoodRepository
 {
+	public FoodRepositories(string connectionstring)
+	{
+		this.connectionString = connectionstring;
+	}
+
 	public async Task AddAsync(FoodAggregate aggregate)
 	{
 		string[] items = [];
@@ -41,23 +47,42 @@ public class FoodRepositories : BaseRepository, IFoodRepository
 		}
 	}
 
-	public async Task<FoodAggregate> GetByIdAsync(Guid id)
+	public async Task<FoodAggregate?> GetByIdAsync(Guid id)
 	{
-		string sql = "SELECT * "
-					+ "FROM main.Food f "
-					+ "INNER JOIN main.Ingredients ing ON f.ID = ing.id_food "
-					+ "INNER JOIN main.Items i ON i.ID = ing.id_item "
-					+ "WHERE f.ID = @FoodID; ";
+		string sql = "SELECT f.ID, f.Name, f.Deleted, ing.Amount, i.Name"
+					+ " FROM main.Food f"
+					+ " INNER JOIN main.Ingredients ing ON f.ID = ing.id_food"
+					+ " INNER JOIN main.Items i ON i.ID = ing.id_item"
+					+ " WHERE f.ID = @FoodID;";
+
+		NpgsqlParameter<Guid> IDParam = new NpgsqlParameter<Guid>("FoodID", id);
 
 		using (dbCon = new NpgsqlConnection(connectionString))
 		{
-			dbCon.Open();
+			await dbCon.OpenAsync();
+			using (var command = new NpgsqlCommand(sql, dbCon))
+			{
+				command.Parameters.Add(IDParam);
+				using (var reader = await command.ExecuteReaderAsync())
+				{
+					if (!reader.HasRows)
+						return null;
 
-			var result = await dbCon.QueryAsync<FoodAggregate>(
-				sql,
-				new NpgsqlParameter("FoodId", NpgsqlTypes.NpgsqlDbType.Integer));
+					await reader.ReadAsync();
+					Guid ID = reader.GetGuid(0);
+					string Name = reader.GetString(1);
+					bool Deleted = reader.GetBoolean(2);
+					List<Ingredient> Ingredients = [];
 
-			return result.First();
+					do
+					{
+						Ingredient ingredientTemp = new Ingredient(new Item(reader.GetString(4)), reader.GetInt32(3));
+						Ingredients.Add(ingredientTemp);
+					} while (await reader.ReadAsync());
+
+					return new FoodAggregate(ID, Name, Ingredients, Deleted);
+				}
+			}
 		}
 	}
 

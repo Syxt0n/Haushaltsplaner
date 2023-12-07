@@ -9,11 +9,7 @@ using Npgsql;
 namespace Infrastructure.Repositories;
 public abstract class BaseRepository
 {
-	protected string connectionString = "Username = Admin; Password=Lindach1210;Host=federlein.website;Port=5432;Database=Haushaltsplaner;Pooling=true;Connection Lifetime = 0;Trust Server Certificate = true";
-	protected IDbConnection? dbCon;
+	protected string connectionString;
+	protected NpgsqlConnection? dbCon;
 	protected NpgsqlCommand? command;
-
-
-	
-
 }
