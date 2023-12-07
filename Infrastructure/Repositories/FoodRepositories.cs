@@ -4,20 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using DDD_Base.Domain;
 using Domain.Food;
 using Domain.Repositories;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
-public class FoodRepositories : IFoodRepository
+public class FoodRepositories : BaseRepository, IFoodRepository
 {
-	private string connectionString = "";
-	public FoodRepositories(string connectionstring)
-	{
-		connectionString = connectionstring;
-	}
-
 	public async Task AddAsync(FoodAggregate aggregate)
 	{
 		string[] items = [];
@@ -54,22 +49,15 @@ public class FoodRepositories : IFoodRepository
 					+ "INNER JOIN main.Items i ON i.ID = ing.id_item "
 					+ "WHERE f.ID = @FoodID; ";
 
-		using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+		using (dbCon = new NpgsqlConnection(connectionString))
 		{
-			await connection.OpenAsync();
+			dbCon.Open();
 
-			using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
-			{
-				command.Parameters.AddWithValue("@FoodID", id);
+			var result = await dbCon.QueryAsync<FoodAggregate>(
+				sql,
+				new NpgsqlParameter("FoodId", NpgsqlTypes.NpgsqlDbType.Integer));
 
-				using (NpgsqlDataReader reader = command.ExecuteReader())
-				{
-					while (reader.Read())
-					{
-						return new FoodAggregate { ID = }
-					}
-				}
-			}
+			return result.First();
 		}
 	}
 

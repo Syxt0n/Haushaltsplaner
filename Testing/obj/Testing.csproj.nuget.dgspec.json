@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Infrastructure\\Infrastructure.csproj": {}
+    "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\Testing.csproj": {}
   },
   "projects": {
     "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\Domain.csproj": {
@@ -128,6 +128,69 @@
               "version": "[8.0.1, )"
             }
           },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\Testing.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\Testing.csproj",
+        "projectName": "Testing",
+        "projectPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\Testing.csproj",
+        "packagesPath": "C:\\Users\\leonf\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\leonf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/Syxt0n/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Infrastructure\\Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
           "imports": [
             "net461",
             "net462",

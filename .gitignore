@@ -2,4 +2,6 @@
 **/Domain/obj/
 **/Infrastructure/bin/
 **/Infrastructure/obj/
+**/Test/bin/
+**/Test/obj/
 **/.vs/

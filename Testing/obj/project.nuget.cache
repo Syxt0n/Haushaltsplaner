@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sLBMhy7aG+hiQ0qPF7aprzYRXotcGCjRSBvlYn5l7RE1nAc4az/qaoae5Y9aCb8GqzBk7Zcov6D7uj6tcbLcxQ==",
+  "dgSpecHash": "jFxm8veNxvt6SJRYgqjNuKqCHk/tvohCVyI4KzmCVG2oYrNfhRUaoHEKJl6idJsHrXZvuOrLCZyHzAL7shsllQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\leonf\\source\\repos\\Haushaltsplaner\\Testing\\Testing.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leonf\\.nuget\\packages\\dapper\\2.1.24\\dapper.2.1.24.nupkg.sha512",
     "C:\\Users\\leonf\\.nuget\\packages\\ddd-base\\1.1.0\\ddd-base.1.1.0.nupkg.sha512",
