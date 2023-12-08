@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using DDD_Base.Events;
 
-namespace Domain.Food;
+namespace Domain.Food.Events;
 public class FoodIngredientsRemovedEvent : DomainEvent
 {
-	public Ingredient[] Ingredients;
+    public Ingredient[] Ingredients;
 
-	public FoodIngredientsRemovedEvent(Ingredient[] ingredients)
-	{
-		Ingredients = ingredients;
-	}
+    public FoodIngredientsRemovedEvent(Ingredient[] ingredients)
+    {
+        Ingredients = ingredients;
+    }
 }
