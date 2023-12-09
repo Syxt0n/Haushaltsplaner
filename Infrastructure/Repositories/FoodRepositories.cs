@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using DDD_Base.Domain;
 using Domain.Food;
 using Domain.Shared;
+using MediatR;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
@@ -28,10 +29,8 @@ public struct FoodRow
 /// </summary>
 public class FoodRepositories : BaseRepository
 {
-	public FoodRepositories(string connectionstring)
-	{
-		this.connectionString = connectionstring;
-	}
+	public FoodRepositories(string ConnectionString, Mediator Mediator) : base(ConnectionString, Mediator){}
+
 	private async Task<List<FoodAggregate>> callDb(string SQL, NpgsqlParameter[] Params)
 	{
 		List<FoodAggregate> result = [];
@@ -137,17 +136,27 @@ public class FoodRepositories : BaseRepository
 		return result;
 	}
 
-	private async Task executeDb(string SQL, NpgsqlParameter[]? Params)
+	private async Task executeDb(string SQL, NpgsqlParameter[] Params)
 	{
 		using (dbCon = new NpgsqlConnection(connectionString))
 		{
 			await dbCon.OpenAsync();
-			using (var command = new NpgsqlCommand(SQL, dbCon))
+			var t = await dbCon.BeginTransactionAsync();
+			try
 			{
-				foreach (var param in Params)
-					command.Parameters.Add(param);
+				using (var command = new NpgsqlCommand(SQL, dbCon))
+				{
+					foreach (var param in Params)
+						command.Parameters.Add(param);
 
-				await command.ExecuteNonQueryAsync();
+					await command.ExecuteNonQueryAsync();
+				}
+				await t.CommitAsync();
+			}
+			catch (Exception)
+			{
+				await t.RollbackAsync();
+				throw;
 			}
 		}
 	}
@@ -157,18 +166,29 @@ public class FoodRepositories : BaseRepository
 		using (dbCon = new NpgsqlConnection(connectionString))
 		{
 			await dbCon.OpenAsync();
-			using (var command = new NpgsqlCommand(SQL, dbCon))
+			var t = await dbCon.BeginTransactionAsync();
+			try
 			{
-				await command.ExecuteNonQueryAsync();
+				using (var command = new NpgsqlCommand(SQL, dbCon))
+				{
+					await command.ExecuteNonQueryAsync();
+				}
+				await t.CommitAsync();
+			}
+			catch (Exception)
+			{
+				await t.RollbackAsync();
+				throw;
 			}
 		}
 	}
 
 	public async Task AddAsync(FoodAggregate[] aggregates)
 	{
-		List<Task> calls = new List<Task>();
+		List<Task> calls = [];
+		List<Task> events = [];
 		string sql = "CALL main.spInsertFood(@FoodName, @Ingredientnames, @Ingredientcounts)";
-		
+
 		foreach (var value in aggregates)
 		{
 			List<string> items = [];
@@ -186,9 +206,14 @@ public class FoodRepositories : BaseRepository
 			Params[2] = new NpgsqlParameter<int[]>("Ingredientcounts", amounts.ToArray());
 
 			calls.Add(executeDb(sql, Params));
+			foreach (var Event in value.DomainEvents)
+				events.Add(mediator.Publish(Event));
+
+			value.ClearDomainEvents();
 		}
 
 		await Task.WhenAll(calls);
+		await Task.WhenAll(events);
 	}
 
 	public async Task<List<FoodAggregate>?> GetByIdAsync(Guid[] ids)
@@ -224,7 +249,8 @@ public class FoodRepositories : BaseRepository
 
 	public async Task UpdateAsync(FoodAggregate[] aggregates)
 	{
-		List<Task> calls = new List<Task>();
+		List<Task> calls = [];
+		List<Task> events = [];
 		string sql = "CALL main.spUpdateFood(@FoodID, @FoodName, @FoodDeleted, @IngredientNames, @IngredientAmounts)";
 
 		foreach (var value in aggregates)
@@ -246,6 +272,10 @@ public class FoodRepositories : BaseRepository
 			Params[4] = new NpgsqlParameter<int[]>("IngredientAmounts", amounts.ToArray());
 
 			calls.Add(executeDb(sql, Params));
+			foreach (var Event in value.DomainEvents)
+				events.Add(mediator.Publish(Event));
+
+			value.ClearDomainEvents();
 		}
 		await Task.WhenAll(calls);
 	}
