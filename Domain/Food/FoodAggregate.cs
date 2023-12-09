@@ -7,7 +7,7 @@ using DDD_Base.Domain;
 using Domain.Food.Events;
 
 namespace Domain.Food;
-public class FoodAggregate : AggregateRoot<Guid>
+public class FoodAggregate : AggregateRoot<FoodAggregate, Guid>
 {
 	public Guid ID { get; private set; }
 	public string Name { get; private set; }
@@ -27,6 +27,8 @@ public class FoodAggregate : AggregateRoot<Guid>
 		Name = name;
 		Ingredients = ingredients is null ? [] : ingredients;
 		Deleted = false;
+
+		this.AddDomainEvent(new FoodCreatedEvent(this));
 	}
 
 	public bool ChangeName(string name)
@@ -36,14 +38,14 @@ public class FoodAggregate : AggregateRoot<Guid>
 
 		Name = name;
 
-		this.AddDomainEvent(new FoodNameChangedEvent(Name));
+		this.AddDomainEvent(new FoodNameChangedEvent(this));
 		return true;
 	}
 
 	public void Delete()
 	{
 		Deleted = true;
-		this.AddDomainEvent(new FoodDeletedEvent());
+		this.AddDomainEvent(new FoodDeletedEvent(this));
 	}
 
 	public void AddIngredients(Ingredient[] ingredients)
@@ -53,7 +55,7 @@ public class FoodAggregate : AggregateRoot<Guid>
 			addIngredientToList(ingredient);
 		}
 
-		this.AddDomainEvent(new FoodIngredientsAddedEvent(ingredients));
+		this.AddDomainEvent(new FoodIngredientsAddedEvent(this));
 	}
 
 	public void RemoveIngredients(Ingredient[] ingredients)
@@ -63,7 +65,7 @@ public class FoodAggregate : AggregateRoot<Guid>
 			removeIngredientFromList(ingredient);
 		}
 
-		this.AddDomainEvent(new FoodIngredientsRemovedEvent(ingredients));
+		this.AddDomainEvent(new FoodIngredientsRemovedEvent(this));
 	}
 
 	private void addIngredientToList(Ingredient ingredient)

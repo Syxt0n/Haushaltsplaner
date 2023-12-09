@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 using DDD_Base.Events;
 
 namespace Domain.Food.Events;
-public class FoodIngredientsAddedEvent : DomainEvent
+public class FoodIngredientsAddedEvent : DomainEvent<FoodAggregate>
 {
-	public Ingredient[] Ingredients;
-
-	public FoodIngredientsAddedEvent(Ingredient[] ingredients)
+	public FoodIngredientsAddedEvent(FoodAggregate value) : base(value)
 	{
-		Ingredients = ingredients;
 	}
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using DDD_Base.Events;
 
 namespace Domain.Food.Events;
-public class FoodDeletedEvent : DomainEvent
+public class FoodDeletedEvent : DomainEvent<FoodAggregate>
 {
-
+	public FoodDeletedEvent(FoodAggregate value) : base(value)
+	{
+	}
 }
