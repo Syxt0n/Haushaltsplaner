@@ -136,53 +136,6 @@ public class FoodRepositories : BaseRepository
 		return result;
 	}
 
-	private async Task executeDb(string SQL, NpgsqlParameter[] Params)
-	{
-		using (dbCon = new NpgsqlConnection(connectionString))
-		{
-			await dbCon.OpenAsync();
-			var t = await dbCon.BeginTransactionAsync();
-			try
-			{
-				using (var command = new NpgsqlCommand(SQL, dbCon))
-				{
-					foreach (var param in Params)
-						command.Parameters.Add(param);
-
-					await command.ExecuteNonQueryAsync();
-				}
-				await t.CommitAsync();
-			}
-			catch (Exception)
-			{
-				await t.RollbackAsync();
-				throw;
-			}
-		}
-	}
-
-	private async Task executeDb(string SQL)
-	{
-		using (dbCon = new NpgsqlConnection(connectionString))
-		{
-			await dbCon.OpenAsync();
-			var t = await dbCon.BeginTransactionAsync();
-			try
-			{
-				using (var command = new NpgsqlCommand(SQL, dbCon))
-				{
-					await command.ExecuteNonQueryAsync();
-				}
-				await t.CommitAsync();
-			}
-			catch (Exception)
-			{
-				await t.RollbackAsync();
-				throw;
-			}
-		}
-	}
-
 	public async Task AddAsync(FoodAggregate[] aggregates)
 	{
 		List<Task> calls = [];
