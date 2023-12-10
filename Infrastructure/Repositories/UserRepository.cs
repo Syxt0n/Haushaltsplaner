@@ -210,5 +210,6 @@ public class UserRepository: BaseRepository
 			value.ClearDomainEvents();
 		}
 		await Task.WhenAll(calls);
+		await Task.WhenAll(events);
 	}
 }
