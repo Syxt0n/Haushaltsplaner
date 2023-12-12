@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDD_Base.Domain;
-using Domain.Food;
+using DomainBase.Domain;
 using Domain.Persons;
 
 namespace Domain.Mealplans;
 public abstract class MealSlot : ValueObject
 {
 	public Mealtype Type { get; }
-	public PersonAggregate Person { get; }
+	public Person Person { get; }
 	public DayOfWeek DayofWeek { get; }
 
-	public MealSlot(Mealtype mealtype, PersonAggregate person, DayOfWeek dayOfWeek)
+	public MealSlot(Mealtype mealtype, Person person, DayOfWeek dayOfWeek)
 	{
 		Type = mealtype;
 		Person = person;

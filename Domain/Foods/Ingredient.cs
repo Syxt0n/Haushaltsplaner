@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDD_Base.Domain;
+using DomainBase.Domain;
 using Domain.Shared;
 
-namespace Domain.Food;
+namespace Domain.Foods;
 public class Ingredient : ValueObject
 {
 	public Item Item { get; }

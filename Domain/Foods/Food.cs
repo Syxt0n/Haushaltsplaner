@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDD_Base.Domain;
-using Domain.Food.Events;
+using DomainBase.Domain;
+using Domain.Shared;
 
-namespace Domain.Food;
-public class FoodAggregate : AggregateRoot<FoodAggregate, Guid>
+namespace Domain.Foods;
+public class Food : AggregateRoot<Guid?>
 {
-	public Guid ID { get; private set; }
 	public string Name { get; private set; }
 	public List<Ingredient> Ingredients { get; private set; }
 	public bool Deleted { get; set; }
 
-	public FoodAggregate(Guid id, string name, List<Ingredient> ingredients, bool deleted)
+	public Food(Guid id, string name, List<Ingredient> ingredients, bool deleted): base(id)
 	{
-		ID = id;
 		Name = name;
 		Ingredients = ingredients;
 		Deleted = deleted;
 	}
 
-	public FoodAggregate(string name, List<Ingredient>? ingredients)
+	public Food(string name, List<Ingredient>? ingredients) : base(null)
 	{
 		Name = name;
 		Ingredients = ingredients is null ? [] : ingredients;
@@ -55,7 +53,7 @@ public class FoodAggregate : AggregateRoot<FoodAggregate, Guid>
 			addIngredientToList(ingredient);
 		}
 
-		this.AddDomainEvent(new FoodIngredientsAddedEvent(this));
+		this.AddDomainEvent(new FoodIngredientsAddedEvent(this, ingredients));
 	}
 
 	public void RemoveIngredients(Ingredient[] ingredients)
@@ -65,7 +63,7 @@ public class FoodAggregate : AggregateRoot<FoodAggregate, Guid>
 			removeIngredientFromList(ingredient);
 		}
 
-		this.AddDomainEvent(new FoodIngredientsRemovedEvent(this));
+		this.AddDomainEvent(new FoodIngredientsRemovedEvent(this, ingredients));
 	}
 
 	private void addIngredientToList(Ingredient ingredient)

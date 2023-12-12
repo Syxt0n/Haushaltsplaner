@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDD_Base.Domain;
+using DomainBase.Domain;
 
 namespace Domain.Shared;
 public class Item : ValueObject

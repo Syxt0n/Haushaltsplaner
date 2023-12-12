@@ -8,12 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
-    <PackageReference Include="Npgsql" Version="8.0.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DomainBase\DomainBase.csproj" />
+    <Folder Include="Events\" />
   </ItemGroup>
 
 </Project>

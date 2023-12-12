@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDD_Base.Domain;
-using Domain.Food;
+using DomainBase.Domain;
+using Domain.Foods;
 using Domain.Persons;
 
 namespace Domain.Mealplans;
 public class Meal : MealSlot
 {
-	public FoodAggregate Food { get; set; }
-	public Meal(FoodAggregate food, Mealtype mealtype, PersonAggregate person, DayOfWeek dayOfWeek) : base(mealtype, person, dayOfWeek)
+	public Food Food { get; set; }
+	public Meal(Food food, Mealtype mealtype, Person person, DayOfWeek dayOfWeek) : base(mealtype, person, dayOfWeek)
 	{
 		Food = food;
 	}
