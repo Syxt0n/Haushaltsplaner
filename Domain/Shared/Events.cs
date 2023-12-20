@@ -7,6 +7,7 @@ using Domain.Foods;
 using Domain.Persons;
 using Domain.Mealplans;
 using DomainBase.Domain;
+using Domain.Shoppinglists;
 
 namespace Domain.Shared;
 public record FoodCreatedEvent(Food Food) : IDomainEvent;
@@ -23,3 +24,5 @@ public record MealplanWeekChangedEvent(Mealplan Mealplan) : IDomainEvent;
 public record MealplanMealslotAddedEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
 public record MealplanMealSlotClearedEvent(Mealplan Mealplan, MealSlot MealSlot) : IDomainEvent;
 public record MealplanMealSlotOverridenEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
+
+public record ShoppinglistCreatedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
