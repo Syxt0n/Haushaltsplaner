@@ -26,3 +26,7 @@ public record MealplanMealSlotClearedEvent(Mealplan Mealplan, MealSlot MealSlot)
 public record MealplanMealSlotOverridenEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
 
 public record ShoppinglistCreatedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+public record ShoppinglistArticleAddedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+public record ShoppinglistArticleRemovedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+public record ShoppinglistArticleSwappedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+public record ShoppinglistArticleAmountChangedEvent(Shoppinglist Shoppinglist) : IDomainEvent;

@@ -30,6 +30,9 @@ public class Shoppinglist : AggregateRoot<Guid?>
 	//Add/Remove
 	public void AddArticle(Article[] articles)
 	{
+		bool amountWasChanged = false;
+		bool articleWasAdded =false;
+
 		foreach (var article in articles)
 		{
 			if (Articles.Contains(article))
@@ -39,14 +42,27 @@ public class Shoppinglist : AggregateRoot<Guid?>
 				Articles[listArticelIndex] = new Article(
 					article.Item, listArticel.Amount + article.Amount, listArticel.Position
 				);
+				amountWasChanged = true;
 			}
 			else
+			{
 				Articles.Add(article);
+				articleWasAdded = true;
+			}
 		}
+
+		if (amountWasChanged)
+			this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
+		
+		if (articleWasAdded)
+			this.AddDomainEvent(new ShoppinglistArticleAddedEvent(this));
 	}
 
 	public void RemoveArticle((int Position, int Amout)[] removableItems)
 	{
+		bool articleWasChanged = false;
+		bool articleWasRemoved = false;
+
 		foreach (var tuple in removableItems)
 		{
 			Article listArticle = Articles.Find(x => x.Position == tuple.Position);
@@ -60,27 +76,55 @@ public class Shoppinglist : AggregateRoot<Guid?>
 				Articles[listArticelIndex] = new Article(
 					listArticle.Item, listArticle.Amount - tuple.Amout, listArticle.Position
 				);
+				articleWasChanged = true;
 			}
 			else
+			{
 				Articles.Remove(listArticle);
+				articleWasRemoved = true;
+			}
 		}
+
+		if (articleWasChanged)
+			this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
+			
+		if (articleWasRemoved)
+			this.AddDomainEvent(new ShoppinglistArticleRemovedEvent(this));
 	}
 
-	//ChangePosition
-		//lade Item aus [ZielPos] in Zwischenspeicher
-		//Schreibe Item von [ParamPos] in [ZielPos]
-		//Solange [ParamPos] = frei
-			//lade Item aus [ZielPos] in Zwischenspeicher
-			//Schreibe Item von [ParamPos] in [ZielPos]
+	public void ChangePosition((int StartPos, int TargetPos)[] values)
+	{
+		foreach (var tuple in values)
+		{
+			if (!isValidPosition(tuple.StartPos) || !isValidPosition(tuple.TargetPos))
+				continue;
 
-		//Bedacht werden muss hier: 
-		//	-ZielPos kann größer ODER kleiner = [ParamPos] sein
-		//=>	Die Schleife muss unabhängig von den wirklichen Positionen durchlaufen
-		//		(Differenz errechnen => wenn Differenz < 0 => Differenz mal -1)
-		//	-Das Prinzip innerhalb der Schleife besteht immer aus:
-		//		+Item an [Pos] rausnehmen und zwischenspeichern
-		//		+vorheriges, zwischengespeichertes Item in [Pos] überschreiben
-		
+			if (tuple.StartPos < tuple.TargetPos)
+				swapArticles(tuple.StartPos, tuple.TargetPos);
+			else
+				swapArticles(tuple.TargetPos, tuple.StartPos);
+		}
+
+		this.AddDomainEvent(new ShoppinglistArticleSwappedEvent(this));
+	}	
+
+	private bool isValidPosition(int positionValue)
+	{
+		return positionValue >= 0 && positionValue < Articles.Count;
+	}
+
+	private void swapArticles(int smallerPos, int greaterPos)
+	{
+		Article tempArticle = Articles[smallerPos];
+
+		for	(int iCount = smallerPos + 1; iCount <= greaterPos; iCount++)
+		{
+			Article tempArticle2 = Articles[iCount];
+			Articles[iCount-1] = tempArticle2;
+		}
+
+		Articles[greaterPos] = tempArticle;
+	}
 
 	public void ChangeAmount((int Position, int Amount)[] items)
 	{
@@ -100,5 +144,7 @@ public class Shoppinglist : AggregateRoot<Guid?>
 				listArticle.Item, tuple.Amount, listArticle.Amount
 			);
 		}
+
+		this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
 	}
 }
