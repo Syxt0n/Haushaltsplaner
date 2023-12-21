@@ -28,25 +28,27 @@ public class Shoppinglist : AggregateRoot<Guid?>
 	}
 
 	//Add/Remove
-	public void AddArticle(Article[] articles)
+	public void AddArticles((Item Item, int Amount)[] articles)
 	{
 		bool amountWasChanged = false;
 		bool articleWasAdded =false;
 
-		foreach (var article in articles)
+		foreach (var tuple in articles)
 		{
-			if (Articles.Contains(article))
+			Article listArticle = Articles.Find(x => x.Item == tuple.Item);
+			if (listArticle is not null)
 			{
-				int listArticelIndex = Articles.IndexOf(article);
+				int listArticelIndex = Articles.IndexOf(listArticle);
 				Article listArticel = Articles[listArticelIndex];
 				Articles[listArticelIndex] = new Article(
-					article.Item, listArticel.Amount + article.Amount, listArticel.Position
+					tuple.Item, listArticel.Amount + tuple.Amount, listArticel.Position
 				);
 				amountWasChanged = true;
 			}
 			else
 			{
-				Articles.Add(article);
+				//Position errechnen
+				Articles.Add(new Article(tuple.Item, tuple.Amount, Articles.Count));
 				articleWasAdded = true;
 			}
 		}
@@ -58,7 +60,7 @@ public class Shoppinglist : AggregateRoot<Guid?>
 			this.AddDomainEvent(new ShoppinglistArticleAddedEvent(this));
 	}
 
-	public void RemoveArticle((int Position, int Amout)[] removableItems)
+	public void RemoveArticles((int Position, int Amout)[] removableItems)
 	{
 		bool articleWasChanged = false;
 		bool articleWasRemoved = false;
@@ -80,7 +82,9 @@ public class Shoppinglist : AggregateRoot<Guid?>
 			}
 			else
 			{
+				swapArticles(listArticelIndex, Articles.Count);
 				Articles.Remove(listArticle);
+				articleWasChanged = true;
 				articleWasRemoved = true;
 			}
 		}

@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DomainBase.Domain;
 using Domain.Shared;
+using Domain.Shoppinglists;
+using Domain.Foods;
 
 namespace Domain.Mealplans;
 public class Mealplan : AggregateRoot<Guid?>
@@ -56,6 +58,19 @@ public class Mealplan : AggregateRoot<Guid?>
 			Meals.RemoveAt(Meals.FindIndex(m => m.Equals(mealSlot)));
 			this.AddDomainEvent(new MealplanMealSlotClearedEvent(this, mealSlot));
 		}
+	}
+
+	public void ExportToShoppinglist(Shoppinglist shoppinglist)
+	{
+		(Item Item, int Amount)[] values = [];
+		foreach (var meal in Meals)
+		{
+			foreach (var ingredient in meal.Food.Ingredients)
+				values.Append((ingredient.Item, ingredient.Amount));
+		}
+
+		shoppinglist.AddArticles(values);
+		this.AddDomainEvent(new MealPlanExportedToShoppinglistEvent(this, shoppinglist));
 	}
 
 	static bool IsValidWeekNumber(int weekNumber)
