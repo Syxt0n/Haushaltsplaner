@@ -9,6 +9,7 @@ using Domain.Mealplans;
 using DomainBase.Domain;
 using Domain.Shoppinglists;
 using Domain.Calendar;
+using Domain.Choreplans;
 
 namespace Domain.Shared;
 public record FoodCreatedEvent(Food Food) : IDomainEvent;
@@ -41,3 +42,8 @@ public record AppointmentTimeRangeChangedEvent(Appointment Appointment) : IDomai
 public record AppointmentReminderAddedEvent(Appointment Appointment) : IDomainEvent;
 public record AppointmentReminderRemovedEvent(Appointment Appointment) : IDomainEvent;
 public record AppointmentDoneEvent(Appointment Appointment) : IDomainEvent;
+
+public record ChoreplanWeekChangedEvent(Choreplan choreplan) : IDomainEvent;
+public record ChoreplanChorePlanSlotOverridenEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
+public record ChoreplanChorePlanSlotAddedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
+public record ChoreplanChorePlanSlotClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
