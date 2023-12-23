@@ -8,6 +8,7 @@ using Domain.Persons;
 using Domain.Mealplans;
 using DomainBase.Domain;
 using Domain.Shoppinglists;
+using Domain.Calendar;
 
 namespace Domain.Shared;
 public record FoodCreatedEvent(Food Food) : IDomainEvent;
@@ -31,3 +32,12 @@ public record ShoppinglistArticleAddedEvent(Shoppinglist Shoppinglist) : IDomain
 public record ShoppinglistArticleRemovedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticleSwappedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticleAmountChangedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+
+public record AppointmentCreatedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentTitleChangedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentDescriptionChangedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentDateChangedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentTimeRangeChangedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentReminderAddedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentReminderRemovedEvent(Appointment Appointment) : IDomainEvent;
+public record AppointmentDoneEvent(Appointment Appointment) : IDomainEvent;

@@ -31,7 +31,7 @@ public class Food : AggregateRoot<Guid?>
 
 	public bool ChangeName(string name)
 	{
-		if (name == "")
+		if (string.IsNullOrEmpty(name))
 			return false;
 
 		Name = name;
