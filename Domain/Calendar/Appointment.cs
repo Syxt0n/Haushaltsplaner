@@ -83,7 +83,6 @@ public class Appointment : Entity<Guid?>
     {
         ReminderInMinutes.Remove(ReminderInMinutes.Find(x => x == MinutesBeforeDue));
         this.AddDomainEvent(new AppointmentReminderRemovedEvent(this));
-
     }
     
     public void FinishAppointment()

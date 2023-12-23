@@ -9,28 +9,38 @@ using System.Globalization;
 
 namespace Domain.Calendar;
 
-public static class Calendar
+public class Calendar : AggregateRoot<Guid?>
 {
-    public static CultureInfo ActiveCulture {get; private set;}
-    public static int ActiveWeek {get; private set;}
-    public static List<Appointment> Appointments {get; private set;} = [];
+    public CultureInfo ActiveCulture {get; private set;}
+    public int ActiveWeek {get; private set;}
+    public List<Appointment> Appointments {get; private set;} = [];
 
-    public static void SetupCalendar(CultureInfo activeCultureInfo)
+    public Calendar(Guid id, CultureInfo activeCultureInfo, List<Appointment> appointments): base(id)
     {
         ActiveCulture = activeCultureInfo;
         ActiveWeek = ActiveCulture.Calendar.GetWeekOfYear(
             DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday
         );
+        Appointments = appointments;
     }
 
-    public static void MakeNewAppointment(Appointment[] appointments)
+    public Calendar(CultureInfo activeCultureInfo, List<Appointment> appointments): base(null)
+    {
+        ActiveCulture = activeCultureInfo;
+        ActiveWeek = ActiveCulture.Calendar.GetWeekOfYear(
+            DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday
+        );
+        Appointments = appointments;
+    }
+
+    public void MakeNewAppointment(Appointment[] appointments)
     {
         foreach (var appointment in appointments)
             Appointments.Add(appointment);
     }
 
-    public static List<Appointment> CheckActiveAppointments(DateTime dateTime)
+    public List<Appointment> CheckActiveAppointments(DateTime dayValue)
     {
-        return Appointments.Where(a => a.IsInReminderRange(dateTime)).ToList();
+        return Appointments.Where(a => a.IsInReminderRange(dayValue)).ToList();
     }
 }
