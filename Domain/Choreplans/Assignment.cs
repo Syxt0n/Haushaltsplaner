@@ -9,20 +9,19 @@ using Domain.Persons;
 
 namespace Domain.Choreplans;
 
-public abstract class ChoreplanSlot : ValueObject
+public class Assignment : ChoreplanSlot
 {
-    public Person Person { get; }
-	public DayOfWeek DayofWeek { get; }
+    public Chore Chore { get; }
 
-    public ChoreplanSlot(Person person, DayOfWeek dayOfWeek)
+    public Assignment(Person person, DayOfWeek dayOfWeek, Chore chore) : base(person, dayOfWeek)
     {
-        Person = person;
-        DayofWeek = dayOfWeek;
+        Chore = chore;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Person;
         yield return DayofWeek;
+        yield return Chore;
     }
 }

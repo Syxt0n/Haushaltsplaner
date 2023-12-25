@@ -44,6 +44,6 @@ public record AppointmentReminderRemovedEvent(Appointment Appointment) : IDomain
 public record AppointmentDoneEvent(Appointment Appointment) : IDomainEvent;
 
 public record ChoreplanWeekChangedEvent(Choreplan choreplan) : IDomainEvent;
-public record ChoreplanChorePlanSlotOverridenEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
-public record ChoreplanChorePlanSlotAddedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
-public record ChoreplanChorePlanSlotClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
+public record ChoreplanAssignmentOverridenEvent(Choreplan choreplan, Assignment chore) : IDomainEvent;
+public record ChoreplanAssignmentAddedEvent(Choreplan choreplan, Assignment chore) : IDomainEvent;
+public record ChoreplanAssignmentClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
