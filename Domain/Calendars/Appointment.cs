@@ -9,55 +9,57 @@ using System.Net.Http.Headers;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Domain.Calendar;
+namespace Domain.Calendars;
 
 public class Appointment : Entity<Guid?>
 {
     public string Title { get; private set;} = "";
-    public string? Description { get; private set;} = "";
-    public DateTime Date { get; private set;} = DateTime.Now;
+    public string Description { get; private set;} = "";
+    public DateTime DueDate { get; private set;} = DateTime.Now;
     public TimeSpan TimeRange { get; private set;}
     public List<int> ReminderInMinutes {get; private set;} = [];
     public bool Done {get; private set;} = false;
 
-    public Appointment(Guid? id, string title, string? description, DateTime date, TimeSpan timeRange) : base(id)
+    public Appointment(Guid? id, string title, string description, DateTime dueDate, TimeSpan timeRange) : base(id)
     {
         Id = id;
         Title = title;
         Description = description;
-        Date = date;
+        DueDate = dueDate;
         TimeRange = timeRange;
     }
 
-    public Appointment(string title, string? description, DateTime date, TimeSpan timeRange): base(null)
+    public Appointment(string title, string description, DateTime dueDate, TimeSpan timeRange): base(null)
     {
         Title = title;
         Description = description;
-        Date = date;
+        DueDate = dueDate;
         TimeRange = timeRange;
 
         this.AddDomainEvent(new AppointmentCreatedEvent(this));
     }
 
-    public bool ChangeTitle(string title)
+    public void ChangeTitle(string title)
     {
         if (string.IsNullOrEmpty(Title))
-            return false;
+            return;
 
         Title = title;
         this.AddDomainEvent(new AppointmentTitleChangedEvent(this));
-        return true;
     }
 
-    public void ChangeDescription(string? description)
+    public void ChangeDescription(string description)
     {
+        if (string.IsNullOrEmpty(description))
+            return;
+        
         Description = description;
         this.AddDomainEvent(new AppointmentDescriptionChangedEvent(this));
     }
 
-    public void ChangeDate(DateTime date)
+    public void ChangeDate(DateTime dueDate)
     {
-        Date = date;
+        DueDate = dueDate;
         this.AddDomainEvent(new AppointmentDateChangedEvent(this));
     }
 
@@ -75,8 +77,8 @@ public class Appointment : Entity<Guid?>
            )
         {
             ReminderInMinutes.Add(MinutesBeforeDue);
+            this.AddDomainEvent(new AppointmentReminderAddedEvent(this));
         }
-        this.AddDomainEvent(new AppointmentReminderAddedEvent(this));
     }
 
     public void RemoveReminder(int MinutesBeforeDue)
@@ -93,19 +95,13 @@ public class Appointment : Entity<Guid?>
 
     public bool IsInReminderRange(DateTime timeValue)
     {
-        bool result = false;
-
         foreach (int reminder in ReminderInMinutes)
         {
-            if (
-                (Date.Subtract(timeValue).Minutes > 0) && 
-                (Date.Subtract(timeValue).Minutes <= reminder)
-               )
-            {
-                return true;
-            }
+            return 
+                (DueDate.Subtract(timeValue).Minutes > 0) && 
+                (DueDate.Subtract(timeValue).Minutes <= reminder);
         }
 
-        return result;
+        return false;
     }
 }

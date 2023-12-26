@@ -18,6 +18,6 @@ public class Mealtype : ValueObject
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{
-		yield return this.Value;
+		yield return Value;
 	}
 }

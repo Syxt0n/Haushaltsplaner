@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 using Domain.Shared;
 using DomainBase.Domain;
 
@@ -27,77 +28,84 @@ public class Shoppinglist : AggregateRoot<Guid?>
 		this.AddDomainEvent(new ShoppinglistCreatedEvent(this));
 	}
 
-	//Add/Remove
-	public void AddArticles((Item Item, int Amount)[] articles)
+	public void AddArticles(Article[] articles)
 	{
-		bool amountWasChanged = false;
-		bool articleWasAdded =false;
-
-		foreach (var tuple in articles)
+		List<Article> overridenArticles = [];
+		foreach (var article in articles)
 		{
-			Article listArticle = Articles.Find(x => x.Item == tuple.Item);
-			if (listArticle is not null)
-			{
-				int listArticelIndex = Articles.IndexOf(listArticle);
-				Article listArticel = Articles[listArticelIndex];
-				Articles[listArticelIndex] = new Article(
-					tuple.Item, listArticel.Amount + tuple.Amount, listArticel.Position
-				);
-				amountWasChanged = true;
-			}
-			else
-			{
-				//Position errechnen
-				Articles.Add(new Article(tuple.Item, tuple.Amount, Articles.Count));
-				articleWasAdded = true;
-			}
+			overridenArticles = addArticleToList(article);
 		}
 
-		if (amountWasChanged)
-			this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
+		if (overridenArticles.Count > 0)
+			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, overridenArticles));
 		
-		if (articleWasAdded)
-			this.AddDomainEvent(new ShoppinglistArticleAddedEvent(this));
+		this.AddDomainEvent(new ShoppinglistArticleAddedEvent(this));
 	}
 
-	public void RemoveArticles((int Position, int Amout)[] removableItems)
+	private List<Article> addArticleToList(Article article)
 	{
-		bool articleWasChanged = false;
-		bool articleWasRemoved = false;
+		List<Article> result = [];
+		Article newArticle;
 
-		foreach (var tuple in removableItems)
+		int index = Articles.IndexOf(article);
+		if (index > -1)
 		{
-			Article listArticle = Articles.Find(x => x.Position == tuple.Position);
-			if (listArticle is null)
-				continue;
+			Article listArticle = Articles[index];
 
-			int listArticelIndex = Articles.IndexOf(listArticle);
+			newArticle = new Article(
+				article.Item,
+				listArticle.Amount + article.Amount,
+				listArticle.Position
+			);
+			result.Add(listArticle);
+			Articles.Remove(listArticle);
+		}
+		else
+			newArticle = new Article(article.Item, article.Amount, Articles.Count);
 
-			if (listArticle.Amount > tuple.Amout)
+		Articles.Add(newArticle);
+		return result;
+	}
+
+	public void RemoveArticles(Article[] articles)
+	{
+		List<Article> overridenArticles = [];
+		foreach (var article in articles)
+		{
+			int index = Articles.IndexOf(article);
+			
+			if (index > -1)
 			{
-				Articles[listArticelIndex] = new Article(
-					listArticle.Item, listArticle.Amount - tuple.Amout, listArticle.Position
-				);
-				articleWasChanged = true;
-			}
-			else
-			{
-				swapArticles(listArticelIndex, Articles.Count);
-				Articles.Remove(listArticle);
-				articleWasChanged = true;
-				articleWasRemoved = true;
+
+				Article listArticle = Articles[index];
+
+				if (listArticle.Amount > article.Amount)
+				{
+					overridenArticles.Add(listArticle);
+
+					Articles[index] = new Article(
+						listArticle.Item, 
+						listArticle.Amount - article.Amount, 
+						listArticle.Position
+					);
+				}
+				else
+				{
+					overridenArticles.AddRange(swapArticles(index, Articles.Count));
+					Articles.Remove(listArticle);
+				}
 			}
 		}
 
-		if (articleWasChanged)
-			this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
+		if (overridenArticles.Count > 0)
+			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, overridenArticles));
 			
-		if (articleWasRemoved)
-			this.AddDomainEvent(new ShoppinglistArticleRemovedEvent(this));
+		this.AddDomainEvent(new ShoppinglistArticleRemovedEvent(this));
 	}
 
 	public void ChangePosition((int StartPos, int TargetPos)[] values)
 	{
+		bool trigger = false;
 		foreach (var tuple in values)
 		{
 			if (!isValidPosition(tuple.StartPos) || !isValidPosition(tuple.TargetPos))
@@ -107,9 +115,11 @@ public class Shoppinglist : AggregateRoot<Guid?>
 				swapArticles(tuple.StartPos, tuple.TargetPos);
 			else
 				swapArticles(tuple.TargetPos, tuple.StartPos);
+			trigger = true;
 		}
 
-		this.AddDomainEvent(new ShoppinglistArticleSwappedEvent(this));
+		if (trigger)
+			this.AddDomainEvent(new ShoppinglistArticleSwappedEvent(this));
 	}	
 
 	private bool isValidPosition(int positionValue)
@@ -117,38 +127,49 @@ public class Shoppinglist : AggregateRoot<Guid?>
 		return positionValue >= 0 && positionValue < Articles.Count;
 	}
 
-	private void swapArticles(int smallerPos, int greaterPos)
+	private List<Article> swapArticles(int smallerPos, int greaterPos)
 	{
+		List<Article> result = [];
 		Article tempArticle = Articles[smallerPos];
 
 		for	(int iCount = smallerPos + 1; iCount <= greaterPos; iCount++)
 		{
 			Article tempArticle2 = Articles[iCount];
 			Articles[iCount-1] = tempArticle2;
+			if (!Articles.Contains(tempArticle2))
+				result.Add(tempArticle2);
 		}
 
 		Articles[greaterPos] = tempArticle;
+		result.Add(tempArticle);
+		return result;
 	}
 
-	public void ChangeAmount((int Position, int Amount)[] items)
+	public void ChangeAmount(Article[] articles)
 	{
-		foreach (var tuple in items)
+		bool trigger = false;
+		List<Article> result = [];
+		foreach (var article in articles)
 		{
-			if (tuple.Amount <= 0)
-				return;
-
-			Article listArticle = Articles.Find(x => x.Position == tuple.Position);
-			
-			if (listArticle is null)
+			if (article.Amount <= 0)
 				continue;
-			
-			int listArticelIndex = Articles.IndexOf(listArticle);
 
-			Articles[listArticelIndex] = new Article(
-				listArticle.Item, tuple.Amount, listArticle.Amount
-			);
+			int index = Articles.IndexOf(article);
+			if (index > -1)
+			{
+				Article listArticle = Articles[index];
+
+				Articles[index] = new Article(
+					listArticle.Item, 
+					article.Amount, 
+					listArticle.Amount
+				);
+				result.Add(article);
+				
+				trigger = true;
+			}
 		}
-
-		this.AddDomainEvent(new ShoppinglistArticleAmountChangedEvent(this));
+		if (trigger)
+			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, result));
 	}
 }

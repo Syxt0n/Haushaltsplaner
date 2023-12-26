@@ -20,10 +20,10 @@ public class Food : AggregateRoot<Guid?>
 		Deleted = deleted;
 	}
 
-	public Food(string name, List<Ingredient>? ingredients) : base(null)
+	public Food(string name, List<Ingredient> ingredients) : base(null)
 	{
 		Name = name;
-		Ingredients = ingredients is null ? [] : ingredients;
+		Ingredients = ingredients;
 		Deleted = false;
 
 		this.AddDomainEvent(new FoodCreatedEvent(this));
@@ -70,9 +70,10 @@ public class Food : AggregateRoot<Guid?>
 	{
 		Ingredient newIngredient;
 
-		if (Ingredients.Contains(ingredient))
+		int index = Ingredients.IndexOf(ingredient);
+		if (index > -1)
 		{
-			Ingredient listIngredient = Ingredients.Where(i => i == ingredient).First();
+			Ingredient listIngredient = Ingredients[index];
 
 			newIngredient = new Ingredient(
 				ingredient.Item,
@@ -89,19 +90,20 @@ public class Food : AggregateRoot<Guid?>
 
 	private void removeIngredientFromList(Ingredient ingredient)
 	{
-		if (!Ingredients.Contains(ingredient))
-			return;
+		int index = Ingredients.IndexOf(ingredient);
 
-		Ingredient listIngredient = Ingredients.Where(i => i == ingredient).First();
-
-		Ingredients.Remove(listIngredient);
-
-		if ((listIngredient.Amount - ingredient.Amount) > 0)
+		if (index > -1)
 		{
-			Ingredients.Add(new Ingredient(
-				ingredient.Item,
-				listIngredient.Amount - ingredient.Amount
-			));
+			Ingredient listIngredient = Ingredients[index];
+			Ingredients.Remove(listIngredient);
+
+			if ((listIngredient.Amount - ingredient.Amount) > 0)
+			{
+				Ingredients.Add(new Ingredient(
+					ingredient.Item,
+					listIngredient.Amount - ingredient.Amount
+				));
+			}
 		}
 	}
 }

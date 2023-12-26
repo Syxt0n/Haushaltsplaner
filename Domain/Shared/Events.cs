@@ -8,7 +8,7 @@ using Domain.Persons;
 using Domain.Mealplans;
 using DomainBase.Domain;
 using Domain.Shoppinglists;
-using Domain.Calendar;
+using Domain.Calendars;
 using Domain.Choreplans;
 
 namespace Domain.Shared;
@@ -22,8 +22,9 @@ public record PersonCreatedEvent(Person Person) : IDomainEvent;
 public record PersonDeletedEvent(Person Person) : IDomainEvent;
 public record PersonDisplayNameChangedEvent(Person Person) : IDomainEvent;
 
+public record MealplanCreatedEvent(Mealplan Mealplan) : IDomainEvent;
 public record MealplanWeekChangedEvent(Mealplan Mealplan) : IDomainEvent;
-public record MealplanMealslotAddedEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
+public record MealplanMealAddedEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
 public record MealplanMealSlotClearedEvent(Mealplan Mealplan, MealSlot MealSlot) : IDomainEvent;
 public record MealplanMealSlotOverridenEvent(Mealplan Mealplan, Meal Meal) : IDomainEvent;
 public record MealPlanExportedToShoppinglistEvent(Mealplan Mealplan, Shoppinglist Shoppinglist) : IDomainEvent;
@@ -32,7 +33,7 @@ public record ShoppinglistCreatedEvent(Shoppinglist Shoppinglist) : IDomainEvent
 public record ShoppinglistArticleAddedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticleRemovedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticleSwappedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
-public record ShoppinglistArticleAmountChangedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
+public record ShoppinglistArticlesOverridenChangedEvent(Shoppinglist Shoppinglist, List<Article> overridenArticles) : IDomainEvent;
 
 public record AppointmentCreatedEvent(Appointment Appointment) : IDomainEvent;
 public record AppointmentTitleChangedEvent(Appointment Appointment) : IDomainEvent;
@@ -43,7 +44,11 @@ public record AppointmentReminderAddedEvent(Appointment Appointment) : IDomainEv
 public record AppointmentReminderRemovedEvent(Appointment Appointment) : IDomainEvent;
 public record AppointmentDoneEvent(Appointment Appointment) : IDomainEvent;
 
+public record ChoreplanCreatedEvent(Choreplan Choreplan) : IDomainEvent;
 public record ChoreplanWeekChangedEvent(Choreplan choreplan) : IDomainEvent;
 public record ChoreplanAssignmentOverridenEvent(Choreplan choreplan, Assignment chore) : IDomainEvent;
 public record ChoreplanAssignmentAddedEvent(Choreplan choreplan, Assignment chore) : IDomainEvent;
-public record ChoreplanAssignmentClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
+public record ChoreplanChoreplanSlotClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
+
+public record CalendarCreatedEvent(Calendar Calendar) : IDomainEvent;
+public record CalendarAppointmentAddedEvent(Calendar Calendar, List<Appointment> Appointments) : IDomainEvent;

@@ -11,9 +11,9 @@ namespace Domain.Shoppinglists;
 
 public class Article : ValueObject
 {
-    public Item Item;
-    public int Amount;
-    public int Position;
+    public Item Item { get; }
+    public int Position {get;}
+    public int Amount { get; }
 
     public Article(Item item, int amount, int position)
     {

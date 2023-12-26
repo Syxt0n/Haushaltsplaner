@@ -7,7 +7,7 @@ using DomainBase.Domain;
 using Domain.Shared;
 using System.Globalization;
 
-namespace Domain.Calendar;
+namespace Domain.Calendars;
 
 public class Calendar : AggregateRoot<Guid?>
 {
@@ -31,12 +31,24 @@ public class Calendar : AggregateRoot<Guid?>
             DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday
         );
         Appointments = appointments;
+
+        this.AddDomainEvent(new CalendarCreatedEvent(this));
     }
 
     public void MakeNewAppointment(Appointment[] appointments)
     {
+        List<Appointment> result = [];
+
         foreach (var appointment in appointments)
-            Appointments.Add(appointment);
+        {
+            if (!Appointments.Contains(appointment))
+            {
+                Appointments.Add(appointment);
+                result.Add(appointment);
+            }
+        }
+
+        this.AddDomainEvent(new CalendarAppointmentAddedEvent(this, result));
     }
 
     public List<Appointment> CheckActiveAppointments(DateTime dayValue)

@@ -21,6 +21,7 @@ public class Choreplan : AggregateRoot<Guid?>
     {
         Week = week;
         Assignments = assignments;
+		this.AddDomainEvent(new ChoreplanCreatedEvent(this));
     }
 
     public void ChangeWeek(int week)
@@ -32,27 +33,28 @@ public class Choreplan : AggregateRoot<Guid?>
 		this.AddDomainEvent(new ChoreplanWeekChangedEvent(this));
 	}
 
-    public void AddChore(Assignment chore)
+    public void AddChore(Assignment assignment)
 	{
-		if (Assignments.Contains<Assignment>(chore))
+		int index = Assignments.FindIndex(chs => chs as ChoreplanSlot == assignment as ChoreplanSlot);
+		if (index > -1)
 		{
-			int index = Assignments.FindIndex(chs => chs as ChoreplanSlot == chore as ChoreplanSlot);
-			Assignments[index] = chore;
-			this.AddDomainEvent(new ChoreplanAssignmentOverridenEvent(this, chore));
+			Assignments[index] = assignment;
+			this.AddDomainEvent(new ChoreplanAssignmentOverridenEvent(this, assignment));
 		}
 		else
 		{
-			Assignments.Add(chore);
-			this.AddDomainEvent(new ChoreplanAssignmentAddedEvent(this, chore));
+			Assignments.Add(assignment);
+			this.AddDomainEvent(new ChoreplanAssignmentAddedEvent(this, assignment));
 		}
 	}
 
-	public void ClearChoreplanSlot(ChoreplanSlot chore)
+	public void ClearChoreplanSlot(ChoreplanSlot choreplanSlot)
 	{
-		if (Assignments.Contains(chore))
+		int index = Assignments.FindIndex(chs => chs.Equals(choreplanSlot));
+		if (index > -1)
 		{
-			Assignments.RemoveAt(Assignments.FindIndex(chs => chs.Equals(chore)));
-			this.AddDomainEvent(new ChoreplanAssignmentClearedEvent(this, chore));
+			Assignments.RemoveAt(index);
+			this.AddDomainEvent(new ChoreplanChoreplanSlotClearedEvent(this, choreplanSlot));
 		}
 	}
 

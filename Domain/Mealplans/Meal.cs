@@ -10,7 +10,7 @@ using Domain.Persons;
 namespace Domain.Mealplans;
 public class Meal : MealSlot
 {
-	public Food Food { get; set; }
+	public Food Food { get; }
 	public Meal(Food food, Mealtype mealtype, Person person, DayOfWeek dayOfWeek) : base(mealtype, person, dayOfWeek)
 	{
 		Food = food;
