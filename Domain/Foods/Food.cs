@@ -10,14 +10,11 @@ namespace Domain.Foods;
 public class Food : AggregateRoot<Guid?>
 {
 	public string Name { get; private set; }
-	public List<Ingredient> Ingredients { get; private set; }
+	public List<Ingredient> Ingredients { get; private set; } = [];
 	public bool Deleted { get; set; }
 
-	public Food(Guid id, string name, List<Ingredient> ingredients, bool deleted): base(id)
+	public Food(): base(null)
 	{
-		Name = name;
-		Ingredients = ingredients;
-		Deleted = deleted;
 	}
 
 	public Food(string name, List<Ingredient> ingredients) : base(null)

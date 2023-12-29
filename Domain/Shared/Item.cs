@@ -10,6 +10,9 @@ public class Item : ValueObject
 {
 	public string Name { get; }
 
+	public Item()
+	{}
+
 	public Item(string name)
 	{
 		Name = name;

@@ -26,9 +26,9 @@ public class AppContext: DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Item>();
-        modelBuilder.Entity<Ingredient>();
-        modelBuilder.Entity<Food>();
+        modelBuilder.ApplyConfiguration(new ItemConfiguration());
+        modelBuilder.ApplyConfiguration(new IngredientConfiguration());
+        modelBuilder.ApplyConfiguration(new FoodConfiguration());
     }
 }
 
@@ -41,6 +41,11 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
     {
         builder.ToTable("items", "main");
 
+        builder.Property<Guid>("id")
+            .HasColumnType("UUID")
+            .ValueGeneratedOnAdd()
+            .HasAnnotation("Key", 0);
+
         builder.HasKey("id");
 
         builder.Property(i => i.Name).HasColumnName("name").IsRequired();
@@ -48,31 +53,40 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
 }
 
 // Configuration for Ingredient
+// Configuration for Ingredient
 public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
 {
-    // Configuration for Ingredient
-
     public void Configure(EntityTypeBuilder<Ingredient> builder)
     {
         builder.ToTable("ingredients", "main");
 
-        builder.HasKey("id_food"); // Assuming the column name in the database is "FoodId"
+        builder.Property<Guid>("id_food")
+            .HasColumnType("uuid")
+            .HasAnnotation("Foreign Key", 0);
+
+        builder.Property<Guid>("id_item")
+            .HasColumnType("uuid")
+            .HasAnnotation("Foreign Key", 0);
+
+        // Define composite key
+        builder.HasKey("id_food", "id_item");
 
         builder.Property(i => i.Amount).HasColumnName("amount").IsRequired();
 
-        builder.Property<Guid>("ItemId").HasColumnName("id_item").IsRequired(); // Assuming the column name in the database is "item_id"
-
+        // Define foreign key relationships using shadow properties
         builder.HasOne<Food>()
-            .WithOne()
-            .HasForeignKey<Ingredient>("id_food")
+            .WithMany(f => f.Ingredients)
+            .HasForeignKey("id_food")
             .IsRequired();
 
         builder.HasOne<Item>()
-            .WithOne()
-            .HasForeignKey<Ingredient>("ItemId")
+            .WithMany()
+            .HasForeignKey("id_item")
             .IsRequired();
     }
 }
+
+
 
 // Configuration for Food
 public class FoodConfiguration : IEntityTypeConfiguration<Food>

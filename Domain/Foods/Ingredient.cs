@@ -12,6 +12,10 @@ public class Ingredient : ValueObject
 	public Item Item { get; }
 	public int Amount { get; }
 
+	public Ingredient()
+	{
+	}
+
 	public Ingredient(Item item, int amount)
 	{
 		Item = item;
