@@ -13,6 +13,9 @@ public class Chore : ValueObject
     public string Name { get; } = "";
     public string Description { get; } = "";
 
+    public Chore()
+    {}
+
     public Chore(string name, string description)
     {
         Name = name;

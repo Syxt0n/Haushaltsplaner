@@ -11,6 +11,12 @@ namespace Domain.Mealplans;
 public class Meal : MealSlot
 {
 	public Food Food { get; }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	public Meal()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	{}
+
 	public Meal(Food food, Mealtype mealtype, Person person, DayOfWeek dayOfWeek) : base(mealtype, person, dayOfWeek)
 	{
 		Food = food;

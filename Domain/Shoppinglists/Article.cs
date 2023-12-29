@@ -15,6 +15,11 @@ public class Article : ValueObject
     public int Position {get;}
     public int Amount { get; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public Article()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    {}
+
     public Article(Item item, int amount, int position)
     {
         Item = item;

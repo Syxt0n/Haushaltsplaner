@@ -12,10 +12,10 @@ public class Choreplan : AggregateRoot<Guid?>
 {
     public int Week { get; private set; }
 	public List<Assignment> Assignments { get; private set; }
-    public Choreplan(Guid? id, int week, List<Assignment> assignments) : base(id)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public Choreplan() : base(null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
-        Week = week;
-        Assignments = assignments;
     }
     public Choreplan(int week, List<Assignment> assignments) : base(null)
     {

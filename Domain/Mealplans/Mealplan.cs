@@ -15,10 +15,10 @@ public class Mealplan : AggregateRoot<Guid?>
 	public int Week { get; private set; }
 	public List<Meal> Meals { get; private set; }
 
-	public Mealplan(Guid id, int week, List<Meal> meals):base(id)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	public Mealplan():base(null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	{
-		Week = week;
-		Meals = meals;
 	}
 	public Mealplan(int week, List<Meal> meals):base(null)
 	{

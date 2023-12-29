@@ -1,111 +1,81 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Application.EFCore.Configurations;
 using Domain.Shared;
 using Domain.Foods;
+using Domain.Shoppinglists;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Domain.Calendars;
+using Domain.Mealplans;
+using Domain.Persons;
+using Domain.Choreplans;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.EFCore;
 
 public class AppContext: DbContext
 {
+    #region FoodAggregate
     public DbSet<Item> Items { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Food> Foods { get; set; }
+    #endregion
+
+    #region ShoppinglistAggregate
+    public DbSet<Article> Articles {get; set;}
+    public DbSet<Shoppinglist> Shoppinglists {get; set;}
+    #endregion
+
+    #region Personalcalender
+    public DbSet<Appointment> Appointments {get; set;}
+    public DbSet<PersonalCalendar> PersonalCalendars {get;set;}
+    #endregion
+
+
+    #region Person
+    public DbSet<Person> Persons {get;set;}
+    #endregion
+    
+    #region Mealplanner
+    public DbSet<Mealtype> Mealtypes {get; set;}
+    public DbSet<Meal> Meals {get; set;}
+    public DbSet<Mealplan> Mealplans {get; set;}
+    #endregion
+
+    #region Choreplanner
+    public DbSet<Chore> Chores {get; set;}
+    public DbSet<Assignment> Assignments {get; set;}
+    public DbSet<Choreplan> Choreplans {get; set;}
+    #endregion
+
     private string DbPath = "";
+    private IConfiguration configuration;
 
     
     public AppContext()
     {
-        DbPath = "Server=federlein.website;Database=hpEfCore;Trusted_Connection=True;";
+        DbPath = "Server=federlein.website;Port=5432;Database=Haushaltsplaner;Trusted_Connection=True;Username=admin; Password=Lindach1210";
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql($"Data Source={DbPath}");
-
+        => options.UseNpgsql("Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main");
+    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ItemConfiguration());
         modelBuilder.ApplyConfiguration(new IngredientConfiguration());
         modelBuilder.ApplyConfiguration(new FoodConfiguration());
+        modelBuilder.ApplyConfiguration(new ArticleConfiguration());
+        modelBuilder.ApplyConfiguration(new ShoppinglistConfiguration());
+        modelBuilder.ApplyConfiguration(new PersonConfigurations());
+        modelBuilder.ApplyConfiguration(new CalendarConfigurations());
+        modelBuilder.ApplyConfiguration(new ChoreConfiguration());
+        modelBuilder.ApplyConfiguration(new AssignmentConfiguration());
+        modelBuilder.ApplyConfiguration(new ChoreplanConfigurations());
+        modelBuilder.ApplyConfiguration(new MealtypeConfiguration());
+        modelBuilder.ApplyConfiguration(new MealConfiguration());
+        modelBuilder.ApplyConfiguration(new MealplanConfigurations());
     }
 }
-
-
-#region Configs
-// Configuration for Item
-public class ItemConfiguration : IEntityTypeConfiguration<Item>
-{
-    public void Configure(EntityTypeBuilder<Item> builder)
-    {
-        builder.ToTable("items", "main");
-
-        builder.Property<Guid>("id")
-            .HasColumnType("UUID")
-            .ValueGeneratedOnAdd()
-            .HasAnnotation("Key", 0);
-
-        builder.HasKey("id");
-
-        builder.Property(i => i.Name).HasColumnName("name").IsRequired();
-    }
-}
-
-// Configuration for Ingredient
-// Configuration for Ingredient
-public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
-{
-    public void Configure(EntityTypeBuilder<Ingredient> builder)
-    {
-        builder.ToTable("ingredients", "main");
-
-        builder.Property<Guid>("id_food")
-            .HasColumnType("uuid")
-            .HasAnnotation("Foreign Key", 0);
-
-        builder.Property<Guid>("id_item")
-            .HasColumnType("uuid")
-            .HasAnnotation("Foreign Key", 0);
-
-        // Define composite key
-        builder.HasKey("id_food", "id_item");
-
-        builder.Property(i => i.Amount).HasColumnName("amount").IsRequired();
-
-        // Define foreign key relationships using shadow properties
-        builder.HasOne<Food>()
-            .WithMany(f => f.Ingredients)
-            .HasForeignKey("id_food")
-            .IsRequired();
-
-        builder.HasOne<Item>()
-            .WithMany()
-            .HasForeignKey("id_item")
-            .IsRequired();
-    }
-}
-
-
-
-// Configuration for Food
-public class FoodConfiguration : IEntityTypeConfiguration<Food>
-{
-    public void Configure(EntityTypeBuilder<Food> builder)
-    {
-        builder.ToTable("food", "main");
-
-        builder.HasKey(f => f.Id); // Assuming the column name in the database is "id"
-
-        builder.Property(f => f.Name).HasColumnName("name").IsRequired();
-
-        builder.Property(f => f.Deleted).HasColumnName("deleted").IsRequired();
-
-        builder.HasMany(f => f.Ingredients) // One Food has many Ingredients
-            .WithOne() // One Ingredient belongs to one Food
-            .HasForeignKey("id_food") // The foreign key in the Ingredients table is "id_food"
-            .IsRequired();
-    }
-}
-
-#endregion

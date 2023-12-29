@@ -9,22 +9,19 @@ using System.Globalization;
 
 namespace Domain.Calendars;
 
-public class Calendar : AggregateRoot<Guid?>
+public class PersonalCalendar : AggregateRoot<Guid?>
 {
     public CultureInfo ActiveCulture {get; private set;}
     public int ActiveWeek {get; private set;}
     public List<Appointment> Appointments {get; private set;} = [];
 
-    public Calendar(Guid id, CultureInfo activeCultureInfo, List<Appointment> appointments): base(id)
-    {
-        ActiveCulture = activeCultureInfo;
-        ActiveWeek = ActiveCulture.Calendar.GetWeekOfYear(
-            DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday
-        );
-        Appointments = appointments;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public PersonalCalendar(): base(null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    {        
     }
 
-    public Calendar(CultureInfo activeCultureInfo, List<Appointment> appointments): base(null)
+    public PersonalCalendar(CultureInfo activeCultureInfo, List<Appointment> appointments): base(null)
     {
         ActiveCulture = activeCultureInfo;
         ActiveWeek = ActiveCulture.Calendar.GetWeekOfYear(

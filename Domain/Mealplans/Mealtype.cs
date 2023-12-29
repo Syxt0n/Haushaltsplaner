@@ -11,6 +11,9 @@ public class Mealtype : ValueObject
 {
 	public string Value { get; } = "";
 
+	public Mealtype()
+	{}
+
 	public Mealtype(string value)
 	{
 		this.Value = value;

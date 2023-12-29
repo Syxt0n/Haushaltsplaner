@@ -13,12 +13,12 @@ namespace Domain.Shoppinglists;
 
 public class Shoppinglist : AggregateRoot<Guid?>
 {
-	public DateOnly Date;
-	public List<Article> Articles = [];
-	public Shoppinglist(Guid? ID, DateOnly date, List<Article> articles) : base(ID)
+	public DateOnly Date {get; private set;}
+	public List<Article> Articles {get; private set;} = [];
+	public bool Deleted {get; private set;} = false;
+
+	public Shoppinglist() : base(null)
 	{
-		Date = date;
-		Articles = articles;
 	}
 
 	public Shoppinglist(DateOnly date, List<Article> articles) : base(null)
@@ -171,5 +171,11 @@ public class Shoppinglist : AggregateRoot<Guid?>
 		}
 		if (trigger)
 			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, result));
+	}
+
+	public void Delete()
+	{
+		Deleted = true;
+		this.AddDomainEvent(new ShoppingListDeletedEvent(this));
 	}
 }

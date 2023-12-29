@@ -20,13 +20,8 @@ public class Appointment : Entity<Guid?>
     public List<int> ReminderInMinutes {get; private set;} = [];
     public bool Done {get; private set;} = false;
 
-    public Appointment(Guid? id, string title, string description, DateTime dueDate, TimeSpan timeRange) : base(id)
+    public Appointment() : base(null)
     {
-        Id = id;
-        Title = title;
-        Description = description;
-        DueDate = dueDate;
-        TimeRange = timeRange;
     }
 
     public Appointment(string title, string description, DateTime dueDate, TimeSpan timeRange): base(null)

@@ -13,7 +13,9 @@ public class Food : AggregateRoot<Guid?>
 	public List<Ingredient> Ingredients { get; private set; } = [];
 	public bool Deleted { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public Food(): base(null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	{
 	}
 

@@ -15,6 +15,12 @@ public class Person : AggregateRoot<Guid?>
 	public string Displayname { get; private set; }
 	public bool Deleted { get; private set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	public Person() : base(null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	{
+	}
+	
 	public Person(string displayname, bool deleted) : base(null)
 	{
 		Displayname = displayname;
@@ -23,11 +29,6 @@ public class Person : AggregateRoot<Guid?>
 		this.AddDomainEvent(new PersonCreatedEvent(this));
 	}
 
-	public Person(Guid id, string displayname, bool deleted) : base(id)
-	{
-		Displayname = displayname;
-		Deleted = deleted;
-	}
 
 	public void ChangeDisplayName(string displayname)
 	{

@@ -34,6 +34,7 @@ public record ShoppinglistArticleAddedEvent(Shoppinglist Shoppinglist) : IDomain
 public record ShoppinglistArticleRemovedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticleSwappedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 public record ShoppinglistArticlesOverridenChangedEvent(Shoppinglist Shoppinglist, List<Article> overridenArticles) : IDomainEvent;
+public record ShoppingListDeletedEvent(Shoppinglist Shoppinglist) : IDomainEvent;
 
 public record AppointmentCreatedEvent(Appointment Appointment) : IDomainEvent;
 public record AppointmentTitleChangedEvent(Appointment Appointment) : IDomainEvent;
@@ -50,5 +51,5 @@ public record ChoreplanAssignmentOverridenEvent(Choreplan choreplan, Assignment 
 public record ChoreplanAssignmentAddedEvent(Choreplan choreplan, Assignment chore) : IDomainEvent;
 public record ChoreplanChoreplanSlotClearedEvent(Choreplan choreplan, ChoreplanSlot chore) : IDomainEvent;
 
-public record CalendarCreatedEvent(Calendar Calendar) : IDomainEvent;
-public record CalendarAppointmentAddedEvent(Calendar Calendar, List<Appointment> Appointments) : IDomainEvent;
+public record CalendarCreatedEvent(PersonalCalendar Calendar) : IDomainEvent;
+public record CalendarAppointmentAddedEvent(PersonalCalendar Calendar, List<Appointment> Appointments) : IDomainEvent;
