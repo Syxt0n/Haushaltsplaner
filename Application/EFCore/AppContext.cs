@@ -11,6 +11,8 @@ using Domain.Mealplans;
 using Domain.Persons;
 using Domain.Choreplans;
 using Microsoft.Extensions.Configuration;
+using DomainBase.Domain;
+using MediatR;
 
 namespace Application.EFCore;
 
@@ -50,12 +52,31 @@ public class AppContext: DbContext
     #endregion
 
     private string DbPath = "";
-    private IConfiguration configuration;
+    private readonly IPublisher Publisher;
 
     
-    public AppContext()
+    public AppContext(IPublisher publisher)
     {
         DbPath = "Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main";
+        Publisher = publisher;
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var domainEvents = ChangeTracker.Entries<Entity<Guid?>>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Any())
+            .SelectMany(e => e.DomainEvents);
+
+        
+        foreach(var domevent in domainEvents)
+        {
+            await Publisher.Publish(domevent, cancellationToken);
+        }
+        
+        var result = await base.SaveChangesAsync();        
+
+        return result;
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder options)
