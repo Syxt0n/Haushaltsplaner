@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Mealplans;
+using Domain.Persons;
+using Domain.Foods;
 
 namespace Application.EFCore.Configurations;
 
@@ -47,6 +49,21 @@ public class MealConfiguration : IEntityTypeConfiguration<Meal>
         builder.HasOne<Mealplan>()
             .WithMany(m => m.Meals)
             .HasForeignKey("id_mealplan")
+            .IsRequired();
+
+        builder.HasOne<Food>()
+            .WithMany()
+            .HasForeignKey("id_person")
+            .IsRequired();
+
+        builder.HasOne<Person>()
+            .WithMany()
+            .HasForeignKey("id_person")
+            .IsRequired();
+
+        builder.HasOne<Mealtype>()
+            .WithMany()
+            .HasForeignKey("id_chore")
             .IsRequired();
 
 

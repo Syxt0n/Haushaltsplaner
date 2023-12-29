@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Choreplans;
+using Domain.Persons;
 
 namespace Application.EFCore.Configurations;
 
@@ -46,6 +47,16 @@ public class AssignmentConfiguration : IEntityTypeConfiguration<Assignment>
         builder.HasOne<Choreplan>()
             .WithMany(a => a.Assignments)
             .HasForeignKey("id_choreplan")
+            .IsRequired();
+
+        builder.HasOne<Person>()
+            .WithMany()
+            .HasForeignKey("id_person")
+            .IsRequired();
+
+        builder.HasOne<Chore>()
+            .WithMany()
+            .HasForeignKey("id_chore")
             .IsRequired();
 
         builder.HasKey("id_choreplan", "id_person", "id_chore", "day");

@@ -55,11 +55,11 @@ public class AppContext: DbContext
     
     public AppContext()
     {
-        DbPath = "Server=federlein.website;Port=5432;Database=Haushaltsplaner;Trusted_Connection=True;Username=admin; Password=Lindach1210";
+        DbPath = "Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main";
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql("Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main");
+        => options.UseNpgsql(DbPath);
     
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
