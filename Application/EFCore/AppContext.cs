@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Shared;
 using Domain.Foods;
-// using Domain.Shoppinglists;
-// using Domain.Mealplans;
-// using Domain.Choreplans;
-// using Domain.Calendars;
-// using Domain.Persons;
 
 namespace Application.EFCore;
 
@@ -30,7 +26,9 @@ public class AppContext: DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.Entity<Item>();
+        modelBuilder.Entity<Ingredient>();
+        modelBuilder.Entity<Food>();
     }
 }
 
@@ -43,34 +41,36 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
     {
         builder.ToTable("items", "main");
 
-        builder.HasKey(i => i.Id);
+        builder.HasKey("id");
 
         builder.Property(i => i.Name).HasColumnName("name").IsRequired();
-
-        builder.Property(i => i.Deleted).HasColumnName("deleted");
     }
 }
 
 // Configuration for Ingredient
 public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
 {
+    // Configuration for Ingredient
+
     public void Configure(EntityTypeBuilder<Ingredient> builder)
     {
         builder.ToTable("ingredients", "main");
 
-        builder.HasKey(i => new { i.FoodId, i.ItemId });
+        builder.HasKey("id_food"); // Assuming the column name in the database is "FoodId"
 
         builder.Property(i => i.Amount).HasColumnName("amount").IsRequired();
 
-        builder.HasOne(i => i.Food)
-            .WithMany(f => f.Ingredients)
-            .HasForeignKey(i => i.FoodId)
+        builder.Property<Guid>("ItemId").HasColumnName("id_item").IsRequired(); // Assuming the column name in the database is "item_id"
+
+        builder.HasOne<Food>()
+            .WithOne()
+            .HasForeignKey<Ingredient>("id_food")
             .IsRequired();
 
-        builder.OwnsOne(i => i.Item, item =>
-        {
-            item.Property(p => p.Name).HasColumnName("name").IsRequired();
-        });
+        builder.HasOne<Item>()
+            .WithOne()
+            .HasForeignKey<Ingredient>("ItemId")
+            .IsRequired();
     }
 }
 
@@ -81,24 +81,16 @@ public class FoodConfiguration : IEntityTypeConfiguration<Food>
     {
         builder.ToTable("food", "main");
 
-        builder.HasKey(f => f.Id);
+        builder.HasKey(f => f.Id); // Assuming the column name in the database is "id"
 
         builder.Property(f => f.Name).HasColumnName("name").IsRequired();
 
-        builder.Property(f => f.Deleted).HasColumnName("deleted");
+        builder.Property(f => f.Deleted).HasColumnName("deleted").IsRequired();
 
-        builder.OwnsMany(f => f.Ingredients, ingr =>
-        {
-            ingr.ToTable("ingredients", "main");
-            ingr.HasKey(i => new { i.FoodId, i.ItemId });
-
-            ingr.Property(i => i.Amount).HasColumnName("amount").IsRequired();
-
-            ingr.OwnsOne(i => i.Item, item =>
-            {
-                item.Property(p => p.Name).HasColumnName("name").IsRequired();
-            });
-        });
+        builder.HasMany(f => f.Ingredients) // One Food has many Ingredients
+            .WithOne() // One Ingredient belongs to one Food
+            .HasForeignKey("id_food") // The foreign key in the Ingredients table is "id_food"
+            .IsRequired();
     }
 }
 
