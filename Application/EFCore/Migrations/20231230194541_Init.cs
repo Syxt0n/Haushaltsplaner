@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Application.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class BaseMigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,6 +84,32 @@ namespace Application.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "mealplans",
+                schema: "main",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    weeknumber = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_mealplans", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "mealtypes",
+                schema: "main",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_mealtypes", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "persons",
                 schema: "main",
                 columns: table => new
@@ -137,28 +163,6 @@ namespace Application.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "assignments",
-                schema: "main",
-                columns: table => new
-                {
-                    id_choreplan = table.Column<Guid>(type: "uuid", nullable: false),
-                    id_person = table.Column<Guid>(type: "uuid", nullable: false),
-                    id_chore = table.Column<Guid>(type: "uuid", nullable: false),
-                    day = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_assignments", x => new { x.id_choreplan, x.id_person, x.id_chore, x.day });
-                    table.ForeignKey(
-                        name: "FK_assignments_choreplans_id_choreplan",
-                        column: x => x.id_choreplan,
-                        principalSchema: "main",
-                        principalTable: "choreplans",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ingredients",
                 schema: "main",
                 columns: table => new
@@ -182,6 +186,86 @@ namespace Application.EFCore.Migrations
                         column: x => x.id_item,
                         principalSchema: "main",
                         principalTable: "items",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "assignments",
+                schema: "main",
+                columns: table => new
+                {
+                    id_choreplan = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_person = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_chore = table.Column<Guid>(type: "uuid", nullable: false),
+                    day = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_assignments", x => new { x.id_choreplan, x.id_person, x.id_chore, x.day });
+                    table.ForeignKey(
+                        name: "FK_assignments_choreplans_id_choreplan",
+                        column: x => x.id_choreplan,
+                        principalSchema: "main",
+                        principalTable: "choreplans",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_assignments_chores_id_chore",
+                        column: x => x.id_chore,
+                        principalSchema: "main",
+                        principalTable: "chores",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_assignments_persons_id_person",
+                        column: x => x.id_person,
+                        principalSchema: "main",
+                        principalTable: "persons",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "meals",
+                schema: "main",
+                columns: table => new
+                {
+                    id_mealplan = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_food = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_person = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_mealtype = table.Column<Guid>(type: "uuid", nullable: false),
+                    day = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_meals", x => new { x.id_mealplan, x.id_food, x.id_person, x.id_mealtype, x.day });
+                    table.ForeignKey(
+                        name: "FK_meals_food_id_food",
+                        column: x => x.id_food,
+                        principalSchema: "main",
+                        principalTable: "food",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_meals_mealplans_id_mealplan",
+                        column: x => x.id_mealplan,
+                        principalSchema: "main",
+                        principalTable: "mealplans",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_meals_mealtypes_id_mealtype",
+                        column: x => x.id_mealtype,
+                        principalSchema: "main",
+                        principalTable: "mealtypes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_meals_persons_id_person",
+                        column: x => x.id_person,
+                        principalSchema: "main",
+                        principalTable: "persons",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -226,10 +310,40 @@ namespace Application.EFCore.Migrations
                 column: "id_item");
 
             migrationBuilder.CreateIndex(
+                name: "IX_assignments_id_chore",
+                schema: "main",
+                table: "assignments",
+                column: "id_chore");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_assignments_id_person",
+                schema: "main",
+                table: "assignments",
+                column: "id_person");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ingredients_id_item",
                 schema: "main",
                 table: "ingredients",
                 column: "id_item");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_meals_id_food",
+                schema: "main",
+                table: "meals",
+                column: "id_food");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_meals_id_mealtype",
+                schema: "main",
+                table: "meals",
+                column: "id_mealtype");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_meals_id_person",
+                schema: "main",
+                table: "meals",
+                column: "id_person");
         }
 
         /// <inheritdoc />
@@ -247,15 +361,11 @@ namespace Application.EFCore.Migrations
                 schema: "main");
 
             migrationBuilder.DropTable(
-                name: "chores",
-                schema: "main");
-
-            migrationBuilder.DropTable(
                 name: "ingredients",
                 schema: "main");
 
             migrationBuilder.DropTable(
-                name: "persons",
+                name: "meals",
                 schema: "main");
 
             migrationBuilder.DropTable(
@@ -271,11 +381,27 @@ namespace Application.EFCore.Migrations
                 schema: "main");
 
             migrationBuilder.DropTable(
-                name: "food",
+                name: "chores",
                 schema: "main");
 
             migrationBuilder.DropTable(
                 name: "items",
+                schema: "main");
+
+            migrationBuilder.DropTable(
+                name: "food",
+                schema: "main");
+
+            migrationBuilder.DropTable(
+                name: "mealplans",
+                schema: "main");
+
+            migrationBuilder.DropTable(
+                name: "mealtypes",
+                schema: "main");
+
+            migrationBuilder.DropTable(
+                name: "persons",
                 schema: "main");
         }
     }

@@ -16,7 +16,7 @@ using MediatR;
 
 namespace Application.EFCore;
 
-public class AppContext: DbContext
+public class HpContext: DbContext
 {
     #region FoodAggregate
     public DbSet<Item> Items { get; set; }
@@ -55,10 +55,15 @@ public class AppContext: DbContext
     private readonly IPublisher Publisher;
 
     
-    public AppContext(IPublisher publisher)
+    public HpContext(IPublisher publisher)
     {
         DbPath = "Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main";
         Publisher = publisher;
+    }
+
+    public HpContext()
+    {
+        DbPath = DbPath = "Server=federlein.website:5432;Database=Haushaltsplaner;Username=admin;Password=Lindach1210;pooling=true;SearchPath=main";
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

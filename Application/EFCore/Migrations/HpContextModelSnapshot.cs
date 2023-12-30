@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Application.EFCore.Migrations
 {
-    [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(HpContext))]
+    partial class HpContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -189,7 +189,9 @@ namespace Application.EFCore.Migrations
             modelBuilder.Entity("Domain.Mealplans.Meal", b =>
                 {
                     b.Property<Guid>("id_mealplan")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_mealplan")
+                        .HasAnnotation("Foreign Key", 0);
 
                     b.Property<Guid>("id_food")
                         .HasColumnType("uuid")
@@ -207,25 +209,15 @@ namespace Application.EFCore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("Foreign Key", 0);
 
-                    b.Property<Guid>("ID_Mealplan")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id_mealplan")
-                        .HasAnnotation("Foreign Key", 0);
-
-                    b.Property<Guid>("id_chore")
-                        .HasColumnType("uuid");
-
                     b.HasKey("id_mealplan", "id_food", "id_person", "id_mealtype", "day");
 
-                    b.HasIndex("id_chore");
+                    b.HasIndex("id_food");
+
+                    b.HasIndex("id_mealtype");
 
                     b.HasIndex("id_person");
 
-                    b.ToTable("meals", "main", t =>
-                        {
-                            t.Property("id_mealplan")
-                                .HasColumnName("id_mealplan1");
-                        });
+                    b.ToTable("meals", "main");
                 });
 
             modelBuilder.Entity("Domain.Mealplans.Mealplan", b =>
@@ -387,9 +379,9 @@ namespace Application.EFCore.Migrations
 
             modelBuilder.Entity("Domain.Mealplans.Meal", b =>
                 {
-                    b.HasOne("Domain.Mealplans.Mealtype", null)
+                    b.HasOne("Domain.Foods.Food", null)
                         .WithMany()
-                        .HasForeignKey("id_chore")
+                        .HasForeignKey("id_food")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -399,9 +391,9 @@ namespace Application.EFCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Foods.Food", null)
+                    b.HasOne("Domain.Mealplans.Mealtype", null)
                         .WithMany()
-                        .HasForeignKey("id_person")
+                        .HasForeignKey("id_mealtype")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

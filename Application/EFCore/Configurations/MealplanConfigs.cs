@@ -25,7 +25,7 @@ public class MealConfiguration : IEntityTypeConfiguration<Meal>
     {
         builder.ToTable("meals", "main");
 
-        builder.Property<Guid>(m => m.ID_Mealplan)
+        builder.Property<Guid>("id_mealplan")
             .HasColumnName("id_mealplan")
             .HasAnnotation("Foreign Key", 0);
 
@@ -53,7 +53,7 @@ public class MealConfiguration : IEntityTypeConfiguration<Meal>
 
         builder.HasOne<Food>()
             .WithMany()
-            .HasForeignKey("id_person")
+            .HasForeignKey("id_food")
             .IsRequired();
 
         builder.HasOne<Person>()
@@ -63,7 +63,7 @@ public class MealConfiguration : IEntityTypeConfiguration<Meal>
 
         builder.HasOne<Mealtype>()
             .WithMany()
-            .HasForeignKey("id_chore")
+            .HasForeignKey("id_mealtype")
             .IsRequired();
 
 
@@ -81,7 +81,7 @@ public class MealplanConfigurations : IEntityTypeConfiguration<Mealplan>
 
         builder.Property(p => p.Week).HasColumnName("weeknumber").IsRequired();
 
-        builder.HasMany(c => c.Meals) // One Food has many Ingredients
+        builder.HasMany(mp => mp.Meals) // One Food has many Ingredients
             .WithOne() // One Ingredient belongs to one Food
             .HasForeignKey("id_mealplan") // The foreign key in the Ingredients table is "id_food"
             .IsRequired();
