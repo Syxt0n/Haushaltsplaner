@@ -15,9 +15,7 @@ public abstract class MealSlot : ValueObject
 	public DayOfWeek DayofWeek { get; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public MealSlot()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	{}
 
@@ -26,6 +24,8 @@ public abstract class MealSlot : ValueObject
 		Type = mealtype;
 		Person = person;
 		DayofWeek = dayOfWeek;
+
+		Validate();
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()
@@ -34,4 +34,10 @@ public abstract class MealSlot : ValueObject
 		yield return Person;
 		yield return DayofWeek;
 	}
+
+    public override void Validate()
+    {
+        Type.Validate();
+		Person.Validate();
+    }
 }

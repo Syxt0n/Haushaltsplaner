@@ -21,6 +21,8 @@ public class Choreplan : AggregateRoot<Guid?>
     {
         Week = week;
         Assignments = assignments;
+
+		Validate();
 		this.AddDomainEvent(new ChoreplanCreatedEvent(this));
     }
 
@@ -30,6 +32,8 @@ public class Choreplan : AggregateRoot<Guid?>
 			return;
 
 		Week = week;
+
+		Validate();
 		this.AddDomainEvent(new ChoreplanWeekChangedEvent(this));
 	}
 
@@ -39,11 +43,15 @@ public class Choreplan : AggregateRoot<Guid?>
 		if (index > -1)
 		{
 			Assignments[index] = assignment;
+
+			Validate();
 			this.AddDomainEvent(new ChoreplanAssignmentOverridenEvent(this, assignment));
 		}
 		else
 		{
 			Assignments.Add(assignment);
+
+			Validate();
 			this.AddDomainEvent(new ChoreplanAssignmentAddedEvent(this, assignment));
 		}
 	}
@@ -54,6 +62,8 @@ public class Choreplan : AggregateRoot<Guid?>
 		if (index > -1)
 		{
 			Assignments.RemoveAt(index);
+
+			Validate();
 			this.AddDomainEvent(new ChoreplanChoreplanSlotClearedEvent(this, choreplanSlot));
 		}
 	}
@@ -62,5 +72,17 @@ public class Choreplan : AggregateRoot<Guid?>
 	{
 		return weekNumber >= 1 && weekNumber <= 53;
 	}
+
+    public override void Validate()
+    {
+		/* public int Week { get; private set; }
+		public List<Assignment> Assignments { get; private set; } */   
+
+		if (Week > 53 || Week < 1)
+			throw new ArgumentNullException("Week", "Choreplan must have a valid Weeknumber.");
+
+		foreach	(Assignment assignment in Assignments)
+			assignment.Validate();
+    }
 
 }

@@ -16,11 +16,19 @@ public class Mealtype : ValueObject
 
 	public Mealtype(string value)
 	{
-		this.Value = value;
+		Value = value;
+
+		Validate();
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{
 		yield return Value;
 	}
+
+    public override void Validate()
+    {
+        if (string.IsNullOrEmpty(Value))
+			throw new ArgumentNullException("Value", "Mealtype must have valid Value.");
+    }
 }

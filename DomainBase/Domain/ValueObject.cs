@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,8 @@ namespace DomainBase.Domain;
 public abstract class ValueObject
 {
 	protected abstract IEnumerable<object> GetEqualityComponents();
+
+	public abstract void Validate();
 
 	public override bool Equals(object? obj)
 	{
@@ -46,4 +49,5 @@ public abstract class ValueObject
 	{
 		return !(a == b);
 	}
+
 }

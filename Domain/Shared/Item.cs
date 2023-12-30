@@ -18,10 +18,18 @@ public class Item : ValueObject
 	public Item(string name)
 	{
 		Name = name;
+
+		Validate();
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{
 		yield return Name;
 	}
+
+    public override void Validate()
+    {
+        if (string.IsNullOrEmpty(Name))
+			throw new ArgumentNullException("Name", "Item must have a valid Name.");
+    }
 }

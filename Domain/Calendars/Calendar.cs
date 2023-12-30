@@ -29,6 +29,7 @@ public class PersonalCalendar : AggregateRoot<Guid?>
         );
         Appointments = appointments;
 
+        Validate();
         this.AddDomainEvent(new CalendarCreatedEvent(this));
     }
 
@@ -45,11 +46,21 @@ public class PersonalCalendar : AggregateRoot<Guid?>
             }
         }
 
+        Validate();
         this.AddDomainEvent(new CalendarAppointmentAddedEvent(this, result));
     }
 
     public List<Appointment> CheckActiveAppointments(DateTime dayValue)
     {
         return Appointments.Where(a => a.IsInReminderRange(dayValue)).ToList();
+    }
+
+    public override void Validate()
+    {
+        if (ActiveWeek > 53 || ActiveWeek < 1)
+            throw new ArgumentNullException("ActiveWeek", "Calender must have a valid Weeknumber.");
+
+        foreach (var appointment in Appointments)
+            appointment.Validate();
     }
 }

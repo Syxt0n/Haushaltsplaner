@@ -21,6 +21,8 @@ public class Assignment : ChoreplanSlot
     public Assignment(Person person, DayOfWeek dayOfWeek, Chore chore) : base(person, dayOfWeek)
     {
         Chore = chore;
+        
+        Validate();
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
@@ -28,5 +30,11 @@ public class Assignment : ChoreplanSlot
         yield return Person;
         yield return DayofWeek;
         yield return Chore;
+    }
+
+    public override void Validate()
+    {
+        Person.Validate();
+        Chore.Validate();
     }
 }

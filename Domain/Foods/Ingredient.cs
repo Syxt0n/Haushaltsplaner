@@ -22,10 +22,20 @@ public class Ingredient : ValueObject
 	{
 		Item = item;
 		Amount = amount;
+
+		Validate();
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{
 		yield return Item;
 	}
+
+    public override void Validate()
+    {
+		Item.Validate();
+
+		if (Amount < 1)
+			throw new ArgumentNullException("Amount", "Ingredient amount must be greater than 0.");
+    }
 }

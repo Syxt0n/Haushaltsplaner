@@ -31,36 +31,39 @@ public class Appointment : Entity<Guid?>
         DueDate = dueDate;
         TimeRange = timeRange;
 
+        Validate();
         this.AddDomainEvent(new AppointmentCreatedEvent(this));
     }
 
     public void ChangeTitle(string title)
     {
-        if (string.IsNullOrEmpty(Title))
-            return;
-
         Title = title;
+
+        Validate();
         this.AddDomainEvent(new AppointmentTitleChangedEvent(this));
     }
 
     public void ChangeDescription(string description)
-    {
-        if (string.IsNullOrEmpty(description))
-            return;
-        
+    {       
         Description = description;
+
+        Validate();
         this.AddDomainEvent(new AppointmentDescriptionChangedEvent(this));
     }
 
     public void ChangeDate(DateTime dueDate)
     {
         DueDate = dueDate;
+
+        Validate();
         this.AddDomainEvent(new AppointmentDateChangedEvent(this));
     }
 
     public void ChangeTimeRange(TimeSpan timeRange)
     {
         TimeRange = timeRange;
+
+        Validate();
         this.AddDomainEvent(new AppointmentTimeRangeChangedEvent(this));
     }
 
@@ -72,6 +75,8 @@ public class Appointment : Entity<Guid?>
            )
         {
             ReminderInMinutes.Add(MinutesBeforeDue);
+
+            Validate();
             this.AddDomainEvent(new AppointmentReminderAddedEvent(this));
         }
     }
@@ -79,12 +84,16 @@ public class Appointment : Entity<Guid?>
     public void RemoveReminder(int MinutesBeforeDue)
     {
         ReminderInMinutes.Remove(ReminderInMinutes.Find(x => x == MinutesBeforeDue));
+
+        Validate();
         this.AddDomainEvent(new AppointmentReminderRemovedEvent(this));
     }
     
     public void FinishAppointment()
     {
         Done = true;
+
+        Validate();
         this.AddDomainEvent(new AppointmentDoneEvent(this));
     }
 
@@ -98,5 +107,18 @@ public class Appointment : Entity<Guid?>
         }
 
         return false;
+    }
+
+    public override void Validate()
+    {
+        if (string.IsNullOrEmpty(Title))
+            throw new ArgumentNullException("Title", "Appointment must have valid Title.");
+        
+        if (string.IsNullOrEmpty(Description))
+            throw new ArgumentNullException("Description", "Appointment must have valid Description.");
+
+        foreach (var reminder in ReminderInMinutes)
+            if (reminder < 0)
+                throw new ArgumentNullException("Reminder", "Appointment-Reminder must be at least 1 minute.");
     }
 }

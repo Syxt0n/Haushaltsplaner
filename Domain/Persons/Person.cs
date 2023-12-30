@@ -26,23 +26,30 @@ public class Person : AggregateRoot<Guid?>
 		Displayname = displayname;
 		Deleted = deleted;
 
+		Validate();
 		this.AddDomainEvent(new PersonCreatedEvent(this));
 	}
 
 
 	public void ChangeDisplayName(string displayname)
 	{
-		if (string.IsNullOrEmpty(displayname))
-			return;
-
 		Displayname = displayname;
 
+		Validate();
 		this.AddDomainEvent(new PersonDisplayNameChangedEvent(this));
 	}
 
 	public void Delete()
 	{
 		Deleted = true;
+
+		Validate();
 		this.AddDomainEvent(new PersonDeletedEvent(this));
 	}
+
+    public override void Validate()
+    {
+        if (string.IsNullOrEmpty(Displayname))
+			throw new ArgumentNullException("Displayname", "Person must have valid Displayname.");
+    }
 }

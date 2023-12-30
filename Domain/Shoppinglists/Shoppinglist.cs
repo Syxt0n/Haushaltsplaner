@@ -25,6 +25,8 @@ public class Shoppinglist : AggregateRoot<Guid?>
 	{
 		Date = date;
 		Articles = articles;
+
+		Validate();
 		this.AddDomainEvent(new ShoppinglistCreatedEvent(this));
 	}
 
@@ -36,6 +38,7 @@ public class Shoppinglist : AggregateRoot<Guid?>
 			overridenArticles = addArticleToList(article);
 		}
 
+		Validate();
 		if (overridenArticles.Count > 0)
 			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, overridenArticles));
 		
@@ -97,6 +100,7 @@ public class Shoppinglist : AggregateRoot<Guid?>
 			}
 		}
 
+		Validate();
 		if (overridenArticles.Count > 0)
 			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, overridenArticles));
 			
@@ -118,6 +122,7 @@ public class Shoppinglist : AggregateRoot<Guid?>
 			trigger = true;
 		}
 
+		Validate();
 		if (trigger)
 			this.AddDomainEvent(new ShoppinglistArticleSwappedEvent(this));
 	}	
@@ -169,6 +174,8 @@ public class Shoppinglist : AggregateRoot<Guid?>
 				trigger = true;
 			}
 		}
+
+		Validate();
 		if (trigger)
 			this.AddDomainEvent(new ShoppinglistArticlesOverridenChangedEvent(this, result));
 	}
@@ -176,6 +183,14 @@ public class Shoppinglist : AggregateRoot<Guid?>
 	public void Delete()
 	{
 		Deleted = true;
+
+		Validate();
 		this.AddDomainEvent(new ShoppingListDeletedEvent(this));
 	}
+
+    public override void Validate()
+    {
+        foreach (var article in Articles)
+			article.Validate();
+    }
 }

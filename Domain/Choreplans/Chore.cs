@@ -20,11 +20,22 @@ public class Chore : ValueObject
     {
         Name = name;
         Description = description;
+
+        Validate();
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Name;
         yield return Description;
+    }
+
+    public override void Validate()
+    {
+        if (string.IsNullOrEmpty(Name))
+            throw new ArgumentNullException("Name", "Chore must have valid Name.");
+
+        if (string.IsNullOrEmpty(Description))
+            throw new ArgumentNullException("Description", "Chore must have valid Description.");
     }
 }

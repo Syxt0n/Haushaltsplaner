@@ -25,6 +25,7 @@ public class Mealplan : AggregateRoot<Guid?>
 		Week = week;
 		Meals = meals;
 
+		Validate();
 		this.AddDomainEvent(new MealplanCreatedEvent(this));
 	}
 
@@ -35,6 +36,8 @@ public class Mealplan : AggregateRoot<Guid?>
 			return;
 
 		Week = week;
+
+		Validate();
 		this.AddDomainEvent(new MealplanWeekChangedEvent(this));
 	}
 
@@ -44,11 +47,15 @@ public class Mealplan : AggregateRoot<Guid?>
 		if (index > -1)
 		{
 			Meals[index] = meal;
+
+			Validate();
 			this.AddDomainEvent(new MealplanMealSlotOverridenEvent(this, meal));
 		}
 		else
 		{
 			Meals.Add(meal);
+
+			Validate();
 			this.AddDomainEvent(new MealplanMealAddedEvent(this, meal));
 		}
 	}
@@ -59,6 +66,8 @@ public class Mealplan : AggregateRoot<Guid?>
 		if (index > -1)
 		{
 			Meals.RemoveAt(index);
+
+			Validate();
 			this.AddDomainEvent(new MealplanMealSlotClearedEvent(this, mealSlot));
 		}
 	}
@@ -73,6 +82,8 @@ public class Mealplan : AggregateRoot<Guid?>
 		}
 
 		shoppinglist.AddArticles(values);
+
+		Validate();
 		this.AddDomainEvent(new MealPlanExportedToShoppinglistEvent(this, shoppinglist));
 	}
 
@@ -80,4 +91,13 @@ public class Mealplan : AggregateRoot<Guid?>
 	{
 		return weekNumber >= 1 && weekNumber <= 53;
 	}
+
+    public override void Validate()
+    {
+		if (Week > 53 || Week < 1)
+			throw new ArgumentNullException("Week", "Mealplan must have a valid Weeknumber.");
+
+		foreach	(Meal meal in Meals)
+			meal.Validate();
+    }
 }

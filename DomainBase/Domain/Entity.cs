@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 
 namespace DomainBase.Domain;
 public abstract class Entity<TId>
@@ -11,6 +12,8 @@ public abstract class Entity<TId>
 
 	private readonly List<IDomainEvent> _domainEvents = [];
 	public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
+
+	public abstract void Validate();
 
 	public Entity(TId? ID)
 	{

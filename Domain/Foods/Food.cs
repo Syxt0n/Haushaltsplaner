@@ -25,16 +25,15 @@ public class Food : AggregateRoot<Guid?>
 		Ingredients = ingredients;
 		Deleted = false;
 
+		Validate();
 		this.AddDomainEvent(new FoodCreatedEvent(this));
 	}
 
 	public bool ChangeName(string name)
 	{
-		if (string.IsNullOrEmpty(name))
-			return false;
-
 		Name = name;
 
+		Validate();
 		this.AddDomainEvent(new FoodNameChangedEvent(this));
 		return true;
 	}
@@ -42,6 +41,8 @@ public class Food : AggregateRoot<Guid?>
 	public void Delete()
 	{
 		Deleted = true;
+
+		Validate();
 		this.AddDomainEvent(new FoodDeletedEvent(this));
 	}
 
@@ -52,6 +53,7 @@ public class Food : AggregateRoot<Guid?>
 			addIngredientToList(ingredient);
 		}
 
+		Validate();
 		this.AddDomainEvent(new FoodIngredientsAddedEvent(this, ingredients));
 	}
 
@@ -62,6 +64,7 @@ public class Food : AggregateRoot<Guid?>
 			removeIngredientFromList(ingredient);
 		}
 
+		Validate();
 		this.AddDomainEvent(new FoodIngredientsRemovedEvent(this, ingredients));
 	}
 
@@ -105,4 +108,13 @@ public class Food : AggregateRoot<Guid?>
 			}
 		}
 	}
+
+    public override void Validate()
+    {
+		foreach (var ingredient in Ingredients)
+			ingredient.Validate();
+
+		if (string.IsNullOrEmpty(Name))
+			throw new ArgumentNullException("Name", "Food must have valid name.");
+    }
 }

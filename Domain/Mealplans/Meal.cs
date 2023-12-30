@@ -20,6 +20,8 @@ public class Meal : MealSlot
 	public Meal(Food food, Mealtype mealtype, Person person, DayOfWeek dayOfWeek) : base(mealtype, person, dayOfWeek)
 	{
 		Food = food;
+
+		Validate();
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()
@@ -29,4 +31,11 @@ public class Meal : MealSlot
 		yield return DayofWeek;
 		yield return Food;
 	}
+
+    public override void Validate()
+    {
+		Type.Validate();
+		Person.Validate();
+		Food.Validate();
+    }
 }

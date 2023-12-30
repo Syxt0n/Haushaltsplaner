@@ -24,11 +24,18 @@ public abstract class ChoreplanSlot : ValueObject
     {
         Person = person;
         DayofWeek = dayOfWeek;
+
+        Validate();
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Person;
         yield return DayofWeek;
+    }
+
+    public override void Validate()
+    {
+        Person.Validate();
     }
 }
