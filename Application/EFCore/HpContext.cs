@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using DomainBase.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Domain.Users;
 
 namespace Application.EFCore;
 
@@ -49,6 +50,10 @@ public class HpContext: DbContext
 	public DbSet<Chore> Chores {get; set;}
 	public DbSet<Assignment> Assignments {get; set;}
 	public DbSet<Choreplan> Choreplans {get; set;}
+	#endregion
+
+	#region User
+	public DbSet<User> Users {get; set;}
 	#endregion
 
 	private string DbPath = "";
@@ -108,5 +113,6 @@ public class HpContext: DbContext
 		modelBuilder.ApplyConfiguration(new MealtypeConfiguration());
 		modelBuilder.ApplyConfiguration(new MealConfiguration());
 		modelBuilder.ApplyConfiguration(new MealplanConfigurations());
+		modelBuilder.ApplyConfiguration(new UserConfiguration());
 	}
 }
