@@ -8,6 +8,7 @@ public class User : AggregateRoot<Guid?>
     public string Username {get; private set;}
     public string Password {get; private set;}
     public Person Person {get; private set;}
+    public Userrole Role {get; private set;}
 
     public User(string username, string password, Person person) : base(null)
     {

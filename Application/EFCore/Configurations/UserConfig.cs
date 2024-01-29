@@ -17,6 +17,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Username).HasColumnName("username").IsRequired();
         builder.Property(u => u.Password).HasColumnName("password").IsRequired();
+        builder.Property(u => u.Role).HasColumnName("userrole").IsRequired();
         builder.HasOne(u => u.Person)
             .WithOne()
             .HasForeignKey("id_person")

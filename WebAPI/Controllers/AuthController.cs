@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Domain.Users;
 using Application.EFCore;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WebAPI.Controllers;
 
@@ -13,18 +16,21 @@ public class AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;
     private HpContext Context;
+    private readonly IConfiguration Config;
 
-    public AuthController(ILogger<AuthController> logger, HpContext context)
+    public AuthController(ILogger<AuthController> logger, HpContext context, IConfiguration config)
     {
         _logger = logger;
         Context = context;
+        Config = config;
     }
 
     [HttpPost("login")]
     public ActionResult Login(string username, string password)
     {
-        if (getUserByUsername(username)?.Password == password)
-            Ok(generateJasonWebToken());
+        User? loginUser = getUserByUsername(username);
+        if (loginUser?.Password == password)
+            Ok(generateJasonWebToken(loginUser));
         else
             ValidationProblem();        
     }
@@ -34,11 +40,24 @@ public class AuthController : ControllerBase
         return Context.Users.Where(u => u.Username == username).First();
     }
 
-    private string generateJasonWebToken()
+    private string generateJasonWebToken(User user)
     {
-        List<Claim> claims = new List<Claim> 
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(Config["JwtSettings:Key"]);
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            new Claim(ClaimTypes.Name, "test")
+            Subject = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(ClaimTypes.Name, user.Person.Displayname),
+                new Claim(ClaimTypes.NameIdentifier, user.Username)
+            }),
+            IssuedAt = DateTime.UtcNow,
+            Expires = DateTime.UtcNow.AddMinutes(30),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = Config["JwtSettings:Issuer"]
         };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 };
