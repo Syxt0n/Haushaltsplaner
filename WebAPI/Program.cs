@@ -1,7 +1,8 @@
 using System.Text;
-using Haushaltsplaner_rest.Identity;
+using WebAPI.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Application.EFCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,7 @@ builder.Services.AddAuthorization(options =>
         p.RequireClaim(IdentityData.AdminUserClaimName, "true"));
 });
 
+builder.Services.AddDbContext<HpContext>();
 
 var app = builder.Build();
 

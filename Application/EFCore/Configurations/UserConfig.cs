@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Users;
+using Domain.Persons;
 
 namespace Application.EFCore.Configurations;
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -10,19 +11,18 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users", "main");
 
-        builder.Property<Guid>("id")
-            .HasColumnType("UUID")
-            .ValueGeneratedOnAdd()
-            .HasAnnotation("Key", 0);
+        builder.HasKey(u => u.Id);
+		
+		builder.Property<Guid>("id_person")
+			.HasColumnType("uuid")
+			.HasColumnName("id_person"); // Assuming "id_person" is the foreign key column name
 
-        builder.Property(u => u.Username).HasColumnName("username").IsRequired();
-        builder.Property(u => u.Password).HasColumnName("password").IsRequired();
-        builder.Property(u => u.Role).HasColumnName("userrole").IsRequired();
-        builder.HasOne(u => u.Person)
-            .WithOne()
-            .HasForeignKey("id_person")
-            .IsRequired();
+		builder.HasOne(u => u.Person)
+			.WithOne()
+			.HasForeignKey<User>("id_person");
 
-        builder.HasKey("id");
+    	builder.Property(u => u.Username).HasColumnName("username").IsRequired();
+		builder.Property(u => u.Password).HasColumnName("password").IsRequired();
+		builder.Property(u => u.Role).HasColumnName("userrole").IsRequired();        
     }
 }
