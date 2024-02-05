@@ -13,14 +13,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 		
-		builder.Property<Guid>("id_person")
+		builder.Property<Guid?>("id_person")
 			.HasColumnType("uuid")
-			.HasColumnName("id_person"); // Assuming "id_person" is the foreign key column name
+			.HasColumnName("id_person")
+			.IsRequired(false);
 
 		builder.HasOne(u => u.Person)
 			.WithOne()
 			.HasForeignKey<User>("id_person");
 
+		builder.Property(u => u.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
     	builder.Property(u => u.Username).HasColumnName("username").IsRequired();
 		builder.Property(u => u.Password).HasColumnName("password").IsRequired();
 		builder.Property(u => u.Role).HasColumnName("userrole").IsRequired();        

@@ -11,7 +11,7 @@ public class CalendarConfigurations : IEntityTypeConfiguration<PersonalCalendar>
     {
         builder.ToTable("calendars", "main");
 
-        builder.Property(c => c.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(u => u.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(c => c.ActiveCulture)       
             .HasConversion(

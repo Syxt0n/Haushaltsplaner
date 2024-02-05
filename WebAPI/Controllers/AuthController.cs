@@ -8,18 +8,19 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
+using WebAPI.Controllers.RequstBodies;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController : ControllerBase
+public class authController : ControllerBase
 {
-	private readonly ILogger<AuthController> _logger;
+	private readonly ILogger<authController> _logger;
 	private HpContext Context;
 	private readonly IConfiguration Config;
 
-	public AuthController(ILogger<AuthController> logger, HpContext context, IConfiguration config)
+	public authController(ILogger<authController> logger, HpContext context, IConfiguration config)
 	{
 		_logger = logger;
 		Context = context;
@@ -34,7 +35,7 @@ public class AuthController : ControllerBase
 		if (loginUser?.Password == user.Password)
 			return Ok(generateJasonWebToken(loginUser));
 		else
-			return ValidationProblem();       
+			return ValidationProblem();
 	}
 
 	private User? getUserByUsername(string username)
@@ -51,7 +52,7 @@ public class AuthController : ControllerBase
 			Subject = new ClaimsIdentity(new Claim[]
 			{
 				new Claim(ClaimTypes.Role, user.Role.ToString()),
-				new Claim(ClaimTypes.Name, user.Person.Displayname),
+				new Claim(ClaimTypes.Name, user.Person is not null ? user.Person.Displayname : ""),
 				new Claim(ClaimTypes.NameIdentifier, user.Username)
 			}),
 			IssuedAt = DateTime.UtcNow,

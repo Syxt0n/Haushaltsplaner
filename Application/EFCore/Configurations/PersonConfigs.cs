@@ -10,7 +10,7 @@ public class PersonConfigurations : IEntityTypeConfiguration<Person>
     {
         builder.ToTable("persons", "main");
 
-        builder.Property(p => p.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(p => p.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(p => p.Displayname).HasColumnName("displayname").IsRequired();
         

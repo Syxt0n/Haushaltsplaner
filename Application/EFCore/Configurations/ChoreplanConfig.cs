@@ -11,7 +11,7 @@ public class ChoreConfiguration : IEntityTypeConfiguration<Chore>
     {
         builder.ToTable("chores", "main");
 
-        builder.Property<Guid>("id").HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property<Guid>("id").HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
         builder.Property(c => c.Name).HasColumnName("name").IsRequired();
         builder.Property(c => c.Description).HasColumnName("description").IsRequired();
 
@@ -69,7 +69,7 @@ public class ChoreplanConfigurations : IEntityTypeConfiguration<Choreplan>
     {
         builder.ToTable("choreplans", "main");
 
-        builder.Property(cp => cp.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(cp => cp.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(cp => cp.Week).HasColumnName("weeknumber").IsRequired();
 

@@ -65,7 +65,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("ActiveCulture")
                         .IsRequired()
@@ -112,7 +113,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -134,7 +136,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<int>("Week")
                         .HasColumnType("integer")
@@ -149,7 +152,8 @@ namespace Application.EFCore.Migrations
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean")
@@ -225,7 +229,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<int>("Week")
                         .HasColumnType("integer")
@@ -241,7 +246,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -258,7 +264,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean")
@@ -279,6 +286,7 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UUID")
+                        .HasDefaultValueSql("gen_random_uuid()")
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Name")
@@ -317,7 +325,8 @@ namespace Application.EFCore.Migrations
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date")
@@ -336,7 +345,9 @@ namespace Application.EFCore.Migrations
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -352,7 +363,7 @@ namespace Application.EFCore.Migrations
                         .HasColumnType("text")
                         .HasColumnName("username");
 
-                    b.Property<Guid>("id_person")
+                    b.Property<Guid?>("id_person")
                         .HasColumnType("uuid")
                         .HasColumnName("id_person");
 
@@ -455,9 +466,7 @@ namespace Application.EFCore.Migrations
                 {
                     b.HasOne("Domain.Persons.Person", "Person")
                         .WithOne()
-                        .HasForeignKey("Domain.Users.User", "id_person")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Domain.Users.User", "id_person");
 
                     b.Navigation("Person");
                 });

@@ -1,4 +1,4 @@
-﻿namespace WebAPI;
+﻿namespace WebAPI.Controllers.RequstBodies;
 
 public class AuthLogin
 {

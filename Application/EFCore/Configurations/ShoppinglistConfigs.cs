@@ -43,7 +43,7 @@ public class ShoppinglistConfiguration : IEntityTypeConfiguration<Shoppinglist>
     {
         builder.ToTable("shoppinglists", "main");
 
-        builder.Property(sl => sl.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(sl => sl.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(sl => sl.Date).HasColumnName("date").IsRequired();
 

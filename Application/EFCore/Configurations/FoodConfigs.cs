@@ -13,7 +13,7 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
 
         builder.Property<Guid>("id")
             .HasColumnType("UUID")
-            .ValueGeneratedOnAdd()
+            .HasDefaultValueSql("gen_random_uuid()")
             .HasAnnotation("Key", 0);
 
         builder.HasKey("id");
@@ -67,6 +67,8 @@ public class FoodConfiguration : IEntityTypeConfiguration<Food>
 
         builder.HasKey(f => f.Id); // Assuming the column name in the database is "id"
 
+        builder.Property(f => f.Id).HasDefaultValueSql("gen_random_uuid()");
+        
         builder.Property(f => f.Name).HasColumnName("name").IsRequired();
 
         builder.Property(f => f.Deleted).HasColumnName("deleted").IsRequired();

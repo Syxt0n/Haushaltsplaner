@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Application.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     activeCulture = table.Column<string>(type: "text", nullable: false),
                     activeWeek = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -34,7 +34,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     weeknumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -47,7 +47,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false)
                 },
@@ -61,7 +61,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "text", nullable: false),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -75,7 +75,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "UUID", nullable: false),
+                    id = table.Column<Guid>(type: "UUID", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -88,7 +88,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     weeknumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -101,7 +101,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -114,7 +114,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     displayname = table.Column<string>(type: "text", nullable: false),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -128,7 +128,7 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     date = table.Column<DateOnly>(type: "date", nullable: false),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -271,6 +271,28 @@ namespace Application.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "users",
+                schema: "main",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    username = table.Column<string>(type: "text", nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
+                    id_person = table.Column<Guid>(type: "uuid", nullable: true),
+                    userrole = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_users_persons_id_person",
+                        column: x => x.id_person,
+                        principalSchema: "main",
+                        principalTable: "persons",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "articles",
                 schema: "main",
                 columns: table => new
@@ -344,6 +366,13 @@ namespace Application.EFCore.Migrations
                 schema: "main",
                 table: "meals",
                 column: "id_person");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_id_person",
+                schema: "main",
+                table: "users",
+                column: "id_person",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -366,6 +395,10 @@ namespace Application.EFCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "meals",
+                schema: "main");
+
+            migrationBuilder.DropTable(
+                name: "users",
                 schema: "main");
 
             migrationBuilder.DropTable(

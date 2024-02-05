@@ -12,7 +12,7 @@ public class MealtypeConfiguration : IEntityTypeConfiguration<Mealtype>
     {
         builder.ToTable("mealtypes", "main");
 
-        builder.Property<Guid>("id").HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property<Guid>("id").HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
         builder.Property(mt => mt.Value).HasColumnName("name").IsRequired();
 
         builder.HasKey("id");
@@ -77,7 +77,7 @@ public class MealplanConfigurations : IEntityTypeConfiguration<Mealplan>
     {
         builder.ToTable("mealplans", "main");
 
-        builder.Property(p => p.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(p => p.Id).HasColumnName("id").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(p => p.Week).HasColumnName("weeknumber").IsRequired();
 
