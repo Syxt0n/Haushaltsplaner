@@ -10,6 +10,7 @@ using DomainBase.Domain;
 using Domain.Shoppinglists;
 using Domain.Calendars;
 using Domain.Choreplans;
+using Domain.Users;
 
 namespace Domain.Shared;
 public record FoodCreatedEvent(Food Food) : IDomainEvent;
@@ -53,3 +54,7 @@ public record ChoreplanChoreplanSlotClearedEvent(Choreplan choreplan, ChoreplanS
 
 public record CalendarCreatedEvent(PersonalCalendar Calendar) : IDomainEvent;
 public record CalendarAppointmentAddedEvent(PersonalCalendar Calendar, List<Appointment> Appointments) : IDomainEvent;
+
+public record UserUsernameChangedEvent(User user) : IDomainEvent;
+public record UserPasswordChangedEvent(User user) : IDomainEvent;
+public record UserRoleChangedEvent(User user) : IDomainEvent;

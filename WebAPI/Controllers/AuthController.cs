@@ -14,33 +14,20 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class authController : ControllerBase
+public class authController : WebController<authController>
 {
-	private readonly ILogger<authController> _logger;
-	private HpContext Context;
-	private readonly IConfiguration Config;
+    public authController(ILogger<authController> logger, HpContext context, IConfiguration config) : base(logger, context, config)
+    {
+    }
 
-	public authController(ILogger<authController> logger, HpContext context, IConfiguration config)
+    [HttpPost("login/{ID}")]
+	public ActionResult Login(Guid ID, [FromBody]string password)
 	{
-		_logger = logger;
-		Context = context;
-		Config = config;
-	}
-
-	[HttpPost("login")]
-	public ActionResult Login([FromBody]AuthLogin user)
-	{
-		User? loginUser = getUserByUsername(user.Username);
-
-		if (loginUser?.Password == user.Password)
+		User? loginUser = Context.Users.SingleOrDefault(u => u.Id == ID);
+		if (loginUser?.Password == password)
 			return Ok(generateJasonWebToken(loginUser));
 		else
 			return ValidationProblem();
-	}
-
-	private User? getUserByUsername(string username)
-	{
-		return Context.Users.SingleOrDefault(u => u.Username == username);
 	}
 
 	private string generateJasonWebToken(User user)
