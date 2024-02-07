@@ -43,6 +43,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(IdentityData.AdminUserPolicyName, p => 
         p.RequireClaim(IdentityData.AdminUserClaimName, "true"));
+    options.AddPolicy(IdentityData.PlannerUserPolicyName, p => 
+        p.RequireClaim(IdentityData.PlannerUserClaimName));
+    options.AddPolicy(IdentityData.UserUserPolicyName, p => 
+        p.RequireClaim(IdentityData.UserUserClaimName));
 });
 
 builder.Services.AddDbContext<HpContext>();

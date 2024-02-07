@@ -4,12 +4,13 @@ using Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers.RequstBodies;
+using WebAPI.Identity;
 
 namespace WebAPI;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
+[Authorize(Policy = IdentityData.PlannerUserPolicyName)]
 public class UsersController : WebController<UsersController>
 {
     public UsersController(ILogger<UsersController> logger, HpContext context, IConfiguration config) : base(logger, context, config)
